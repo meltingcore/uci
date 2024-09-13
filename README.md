@@ -3,6 +3,7 @@
 - [UCI](#uci)
    * [Usage](#usage)
    * [Change tools versions](#change-tools-versions)
+   * [Development](#development)
    * [Checks](#checks)
 
 <!-- TOC end -->
@@ -64,6 +65,20 @@ can change what version is being used for a particular tool as follows:
 seen from the examples above.
 * Trivy is handled via GitHub Action that does not support version
 as argument so you cannot adjust it... It will always be the latest.
+
+## Development
+
+Every PR that is created or updated but not merged should trigger
+a workflow that creates a tag named after the developement branch
+that is attempted to be merged to the main branch. So if you want to
+validate any changes before your PR is ready for review, and your
+development branch name is `bugfix/something`, you can just
+invoke the uci action with your branch name as follows:
+
+```yaml
+      - name: Run UCI checks
+        uses: meltingcore/uci@bugfix/something
+```
 
 ## Checks
 

@@ -97,7 +97,7 @@ runs:
       shell: bash
       if: ${{ inputs.python_checks && inputs.pylint_checks }}
       run: |
-        pylint --rcfile .pylintrc ./
+        pylint . --rcfile .pylintrc --recursive=y
     - name: Run Bandit
       shell: bash
       if: ${{ inputs.python_checks && inputs.bandit_checks }}

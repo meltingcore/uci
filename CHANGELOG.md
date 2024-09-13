@@ -1,3 +1,13 @@
+# 1.1.0
+
+IMPROVEMENTS:
+
+* Add separate workflow for development snapshots
+
+BUGFIXES:
+
+* attempt to remediate pylint command error
+
 # 1.0.2
 
 IMPROVEMENTS:
