@@ -3,6 +3,11 @@ description: "A GitHub Action to run plethora of CI checks"
 author: "grumpper"
 
 inputs:
+  # Taskfile version
+  taskfile_version:
+    description: "Taskfile version to use"
+    required: false
+    default: "3.x"
   # Python related version setup
   python_version:
     description: "Python version to use"
@@ -59,69 +64,28 @@ inputs:
 runs:
   using: "composite"
   steps:
-    # Setup Python related tooling
-    - name: Set up Python
-      if: ${{ inputs.python_checks }}
-      uses: actions/setup-python@v4
+    # Setup Taskfile
+    - name: Set up Taskfile
+      uses: arduino/setup-task@v2
       with:
-        python-version: ${{ inputs.python_version }}
-    - name: Setup pylint
-      shell: bash
-      if: ${{ inputs.python_checks && inputs.pylint_checks }}
-      run: |
-        python -m pip install --upgrade pip
-        pip install pylint$PYLINT_VERSION
+        version: ${{ inputs.taskfile_version }}
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+    # Run all CI checks via taskfile
+    - name: Run CI checks
+      run: task
       env:
-        PYLINT_VERSION: ${{ inputs.pylint_version }}
-    - name: Setup bandit
-      shell: bash
-      if: ${{ inputs.python_checks && inputs.bandit_checks }}
-      run: |
-        python -m pip install --upgrade pip
-        pip install bandit$BANDIT_VERSION
-      env:
-        BANDIT_VERSION: ${{ inputs.bandit_version }}
-    # Setup Terraform related tooling
-    - name: Set up Terraform
-      if: ${{ inputs.terraform_checks }}
-      uses: hashicorp/setup-terraform@v3
-      with:
-        terraform_version: ${{ inputs.terraform_version }}
-    - name: Set up TFLint
-      if: ${{ inputs.terraform_checks && inputs.tflint_checks }}
-      uses: terraform-linters/setup-tflint@v4
-      with:
-        tflint_version: ${{ inputs.tflint_version }}
-    # Python checks
-    - name: Run Pylint
-      shell: bash
-      if: ${{ inputs.python_checks && inputs.pylint_checks }}
-      run: |
-        pylint . --rcfile .pylintrc --recursive=y
-    - name: Run Bandit
-      shell: bash
-      if: ${{ inputs.python_checks && inputs.bandit_checks }}
-      run: |
-        bandit -c .bandit.yml -r .
-    # Terraform checks
-    - name: Run terraform fmt
-      shell: bash
-      if: ${{ inputs.terraform_checks && inputs.terraform_fmt_checks }}
-      run: |
-        terraform fmt -recursive
-    - name: Run TFLint
-      shell: bash
-      if: ${{ inputs.terraform_checks && inputs.tflint_checks }}
-      run: |
-        tflint -c .tflint.hcl --init
-        tflint -c .tflint.hcl --recursive
-    - name: Run Trivy
-      if: ${{ inputs.terraform_checks && inputs.trivy_checks }}
-      uses: aquasecurity/trivy-action@0.20.0
-      with:
-        scan-type: "config"
-        hide-progress: true
-        trivy-config: ".trivy.yaml"
+        UCI_PYTHON_CHECKS: ${{ inputs.python_checks }}
+        UCI_PYTHON_VERSION: ${{ inputs.python_version }}
+        UCI_PYLINT_CHECKS: ${{ inputs.pylint_checks }}
+        UCI_PYLINT_VERSION: ${{ inputs.pylint_version }}
+        UCI_BANDIT_CHECKS: ${{ inputs.bandit_checks }}
+        UCI_BANDIT_VERSION: ${{ inputs.bandit_version }}
+        UCI_TERRAFORM_CHECKS: ${{ inputs.terraform_checks }}
+        UCI_TERRAFORM_VERSION: ${{ inputs.terraform_version }}
+        UCI_TERRAFORM_FMT_CHECKS: ${{ inputs.terraform_fmt_checks }}
+        UCI_TFLINT_CHECKS: ${{ inputs.tflint_checks }}
+        UCI_TFLINT_VERSION: ${{ inputs.tflint_version }}
+        UCI_TRIVY_CHECKS: ${{ inputs.trivy_checks }}
 
 branding:
   icon: "underline"

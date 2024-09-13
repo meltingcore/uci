@@ -114,3 +114,12 @@ You can disable some checks if you don't need them as follows:
 
 For more information and details, you can examine the
 [action](./.github/actions/ci/action.yml) file itself.
+
+## TBD
+
+* Split the taskfile to multiple ones based on technology and 
+optionally include them if the checks for the technology is enabled.
+* Redesign the paramters to be set in an one config .env file
+that the taskfile will use.
+* Implement default config to be applied if custom one is not present
+in the repo where the uci action is used.
