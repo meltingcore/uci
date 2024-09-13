@@ -16,28 +16,21 @@ jobs:
         id: create
         run: |
           TAG=$(cat VERSION)
+          MAJOR_VERSION=$(echo $TAG | cut -d. -f1)
           MSG=$(git --no-pager log -1 --format=%B)
           git config user.name "$(git log -n 1 --pretty=format:%an)"
           git config user.email "$(git log -n 1 --pretty=format:%ae)"
           git tag -f -a ${TAG} -m "${MSG}"
           git push origin $TAG -f
+          git tag -f -a ${MAJOR_VERSION} -m "${MSG}"
+          git push origin $MAJOR_VERSION -f
           echo "tag=${TAG}" >> $GITHUB_OUTPUT
     outputs:
       tag: ${{ steps.create.outputs.tag }}
 
-  update-tag:
-    name: Update Major Version Tag
-    needs: [ create-tag ]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-      - name: Update Major Version Tag
-        uses: nowactions/update-majorver@v1
-
   create-release:
     name: Create New Release
-    needs: [ update-tag ]
+    needs: [ create-tag ]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
