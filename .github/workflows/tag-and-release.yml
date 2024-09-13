@@ -30,6 +30,8 @@ jobs:
     needs: [ create-tag ]
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
       - name: Update Major Version Tag
         uses: nowactions/update-majorver@v1
 
