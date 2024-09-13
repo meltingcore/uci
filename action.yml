@@ -69,9 +69,9 @@ runs:
       uses: arduino/setup-task@v2
       with:
         version: ${{ inputs.taskfile_version }}
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
     # Run all CI checks via taskfile
     - name: Run CI checks
+      shell: bash
       run: task
       env:
         UCI_PYTHON_CHECKS: ${{ inputs.python_checks }}
