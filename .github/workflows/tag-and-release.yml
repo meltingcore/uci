@@ -20,8 +20,8 @@ jobs:
           MSG=$(git --no-pager log -1 --format=%B)
           git config user.name "$(git log -n 1 --pretty=format:%an)"
           git config user.email "$(git log -n 1 --pretty=format:%ae)"
-          git tag -f -a ${TAG} -m "${MSG}"
-          git push origin $TAG -f
+          git tag -a ${TAG} -m "${MSG}"
+          git push origin $TAG
           git tag -f -a ${MAJOR_VERSION} -m "${MSG}"
           git push origin $MAJOR_VERSION -f
           echo "tag=${TAG}" >> $GITHUB_OUTPUT
@@ -42,7 +42,7 @@ jobs:
       - name: Create New Release
         uses: softprops/action-gh-release@v2
         with:
-          prerelease: true
+          prerelease: false
           name: "${{needs.create-tag.outputs.tag}} ${{env.PETNAME}}"
           tag_name: ${{needs.create-tag.outputs.tag}}
           generate_release_notes: true
