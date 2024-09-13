@@ -22,7 +22,7 @@ jobs:
 
   release:
     name: Create New Release
-    depends-on: tag
+    needs: [ tag ]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
