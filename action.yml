@@ -66,6 +66,7 @@ runs:
       with:
         python-version: ${{ inputs.python_version }}
     - name: Setup pylint
+      shell: bash
       if: ${{ inputs.python_checks && inputs.pylint_checks }}
       run: |
         python -m pip install --upgrade pip
@@ -73,6 +74,7 @@ runs:
       env:
         PYLINT_VERSION: ${{ inputs.pylint_version }}
     - name: Setup bandit
+      shell: bash
       if: ${{ inputs.python_checks && inputs.bandit_checks }}
       run: |
         python -m pip install --upgrade pip
@@ -92,19 +94,23 @@ runs:
         tflint_version: ${{ inputs.tflint_version }}
     # Python checks
     - name: Run Pylint
+      shell: bash
       if: ${{ inputs.python_checks && inputs.pylint_checks }}
       run: |
         pylint --rcfile .pylintrc ./
     - name: Run Bandit
+      shell: bash
       if: ${{ inputs.python_checks && inputs.bandit_checks }}
       run: |
         bandit -c .bandit.yml -r .
     # Terraform checks
     - name: Run terraform fmt
+      shell: bash
       if: ${{ inputs.terraform_checks && inputs.terraform_fmt_checks }}
       run: |
         terraform fmt -recursive
     - name: Run TFLint
+      shell: bash
       if: ${{ inputs.terraform_checks && inputs.tflint_checks }}
       run: |
         tflint -c .tflint.hcl --init
