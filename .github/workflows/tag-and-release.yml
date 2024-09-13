@@ -38,7 +38,7 @@ jobs:
       - name: Generate Pet Name
         run: |
           pip install petname
-          echo "PETNAME=$(petname -l 20 | sed 's/\b\(.\)/\u\1/g')" >> "$GITHUB_ENV"
+          echo "PETNAME=$(petname -l 20 -s " "| sed 's/\b\(.\)/\u\1/g')" >> "$GITHUB_ENV"
       - name: Create New Release
         uses: softprops/action-gh-release@v2
         with:

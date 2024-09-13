@@ -1,4 +1,4 @@
-# 1.0.0
+# 1.0.1
 
 IMPROVEMENTS:
 
@@ -9,6 +9,7 @@ BUGFIXES:
 
 * tags (except the major version ones) are no longer
 forcefully overwritten remotely
+* the petname separator is now a correctly a space
 
 # 0.1.2
 
