@@ -3,6 +3,12 @@
 IMPROVEMENTS:
 
 * Adds CHANGELOG.md and switch to stable versioning
+* Switch `preprelease` to `false` in the release creation action
+
+BUGFIXES:
+
+* tags (except the major version ones) are no longer
+forcefully overwritten remotely
 
 # 0.1.2
 
