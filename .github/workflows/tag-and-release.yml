@@ -1,0 +1,35 @@
+name: Tag and Release
+
+on:
+  push:
+    branches:
+      - "main"
+
+jobs:
+  tag:
+    name: Create New Tag
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      - name: Create New Tag
+        run: |
+          TAG=$(cat VERSION)
+          MSG=$(git --no-pager log -1 --format=%B)
+          git tag -a $TAG -m $MSG
+          git push origin $TAG
+          echo "tag=${TAG}" >> $GITHUB_ENV
+
+  release:
+    name: Create New Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      - name: Create New Release
+        uses: softprops/action-gh-release@v2
+        with:
+          draft: true
+          prerelease: true
+          name: ${{ env.tag }}
+          generate_release_notes: true
