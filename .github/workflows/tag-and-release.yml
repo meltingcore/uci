@@ -19,7 +19,7 @@ jobs:
           MSG=$(git --no-pager log -1 --format=%B)
           git config user.name "$(git log -n 1 --pretty=format:%an)"
           git config user.email "$(git log -n 1 --pretty=format:%ae)"
-          git tag -a ${TAG} -m "${MSG}"
+          git tag -f -a ${TAG} -m "${MSG}"
           git push origin $TAG
           echo "tag=${TAG}" >> $GITHUB_OUTPUT
     outputs:
