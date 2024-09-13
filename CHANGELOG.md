@@ -1,4 +1,4 @@
-# 1.0.1
+# 1.0.2
 
 IMPROVEMENTS:
 
@@ -10,6 +10,7 @@ BUGFIXES:
 * tags (except the major version ones) are no longer
 forcefully overwritten remotely
 * the petname separator is now a correctly a space
+* new releases are marked now correctly marked as latest
 
 # 0.1.2
 
