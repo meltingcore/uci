@@ -16,7 +16,7 @@ jobs:
       - name: Create New Tag
         id: create
         run: |
-          TAG=$(git --no-pager branch --show-current)
+          TAG=version-$(git --no-pager branch --show-current)
           MSG=$(git --no-pager log -1 --format=%B)
           git config user.name "$(git log -n 1 --pretty=format:%an)"
           git config user.email "$(git log -n 1 --pretty=format:%ae)"
