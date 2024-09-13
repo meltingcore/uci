@@ -46,3 +46,4 @@ jobs:
           name: "${{needs.create-tag.outputs.tag}} ${{env.PETNAME}}"
           tag_name: ${{needs.create-tag.outputs.tag}}
           generate_release_notes: true
+          make_latest: true
