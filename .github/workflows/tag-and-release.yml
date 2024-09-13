@@ -39,8 +39,6 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           prerelease: true
-          name: $TAG
-          tag_name: $TAG
+          name: "${{needs.create-tag.outputs.tag}}"
+          tag_name: ${{needs.create-tag.outputs.tag}}
           generate_release_notes: true
-        env:
-          TAG: ${{needs.create-tag.outputs.tag}}
