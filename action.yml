@@ -27,32 +27,32 @@ inputs:
     default: "latest"
   # Python related feature setup
   python_checks:
-    description: 'Enable python checks as a whole'
+    description: "Enable python checks as a whole"
     required: false
     default: true
   pylint_checks:
-    description: 'Enable python's pylint checks'
+    description: "Enable python's pylint checks"
     required: false
     default: true
   bandit_checks:
-    description: 'Enable python's bandit checks'
+    description: "Enable python's bandit checks"
     required: false
     default: true
   # Terraform related feature setup
   terraform_checks:
-    description: 'Enable terraform checks as a whole'
+    description: "Enable terraform checks as a whole"
     required: false
     default: true
   terraform_fmt_checks:
-    description: 'Enable terraform's fmt checks'
+    description: "Enable terraform's fmt checks"
     required: false
     default: true
   tflint_checks:
-    description: 'Enable terraform's TFLint checks'
+    description: "Enable terraform's TFLint checks"
     required: false
     default: true
   trivy_checks:
-    description: 'Enable terraform's Trivy checks'
+    description: "Enable terraform's Trivy checks"
     required: false
     default: true
 
@@ -113,11 +113,10 @@ runs:
       if: ${{ inputs.terraform_checks && inputs.trivy_checks }}
       uses: aquasecurity/trivy-action@0.20.0
       with:
-        scan-type: 'config'
+        scan-type: "config"
         hide-progress: true
-        trivy-config: '.trivy.yaml'
+        trivy-config: ".trivy.yaml"
 
 branding:
-  icon: 'underline'
-  color: 'blue'
-
+  icon: "underline"
+  color: "blue"
