@@ -39,11 +39,30 @@ esac
 echo "Detected OS: $os"
 
 # Function to install Python on Linux using package managers
+# Function to install Python on Linux using package managers
 install_python_linux() {
     if command -v apt-get >/dev/null; then
         echo "Detected apt-based system. Installing Python using apt..."
-        sudo apt-get update
-        sudo apt-get install -y python3 python3-pip
+
+        # Retry mechanism to handle lock file issue
+        retries=40
+        wait_time=3
+
+        for ((i=1; i<=retries; i++)); do
+            if sudo apt-get update; then
+                sudo apt-get install -y python3 python3-pip
+                break
+            else
+                echo "Attempt $i: Could not get lock, retrying in $wait_time seconds..."
+                sleep $wait_time
+            fi
+
+            # If it's the last retry, exit with failure
+            if [[ $i -eq $retries ]]; then
+                echo "Failed to acquire the lock after 2 minutes. Exiting..."
+                exit 1
+            fi
+        done
     elif command -v dnf >/dev/null; then
         echo "Detected dnf-based system. Installing Python using dnf..."
         sudo dnf install -y python3 python3-pip
