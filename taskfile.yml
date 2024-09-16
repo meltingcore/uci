@@ -10,45 +10,45 @@ output:
 tasks:
   # Installations
   install_pylint:
-    label: Install pylint
+    name: Install pylint
     cmds:
       - pip3 install pylint
     preconditions:
       - sh: '[[ "$UCI_PYTHON_CHECKS" == "true" ]] && [[ "$UCI_PYLINT_CHECKS" == "true" ]]'
   install_bandit:
-    label: Install bandit
+    name: Install bandit
     cmds:
       - pip3 install bandit
     preconditions:
       - sh: '[[ "$UCI_PYTHON_CHECKS" == "true" ]] && [[ "$UCI_BANDIT_CHECKS" == "true" ]]'
   install_terraform:
-    label: Install Terraform
+    name: Install Terraform
     cmds:
       - bash $GITHUB_ACTION_PATH/scripts/install_terraform.sh
     preconditions:
       - sh: '[[ "$UCI_TERRAFORM_CHECKS" == "true" ]]'
   install_tflint:
-    label: Install tflint
+    name: Install tflint
     cmds:
       - curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
     preconditions:
       - sh: '[[ "$UCI_TERRAFORM_CHECKS" == "true" ]]'
   install_trivy:
-    label: Install trivy
+    name: Install trivy
     cmds:
       - curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sudo sh -s -- -b /usr/local/bin ${UCI_TRIVY_VERSION}
     preconditions:
       - sh: '[[ "$UCI_TERRAFORM_CHECKS" == "true" ]]'
   # Python Checks
   run_pylint:
-    label: Run pylint
+    name: Run pylint
     deps: [install_pylint]
     cmds:
       - pylint . --rcfile .pylintrc --recursive=y
     preconditions:
       - sh: '[[ "$UCI_PYTHON_CHECKS" == "true" ]] && [[ "$UCI_PYLINT_CHECKS" == "true" ]]'
   run_bandit:
-    label: Run bandit
+    name: Run bandit
     deps: [install_bandit]
     cmds:
       - bandit -c .bandit.yml -r .
@@ -56,22 +56,23 @@ tasks:
       - sh: '[[ "$UCI_PYTHON_CHECKS" == "true" ]] && [[ "$UCI_BANDIT_CHECKS" == "true" ]]'
   # Terraform Checks
   run_terraform_fmt:
-    label: Run terraform fmt
+    name: Run terraform fmt
     deps: [install_terraform]
     cmds:
       - terraform fmt -recursive
     preconditions:
       - sh: '[[ "$UCI_TERRAFORM_CHECKS" == "true" ]] && [[ "$UCI_TERRAFORM_FMT_CHECKS" == "true" ]]'
   run_tflint:
-    label: Run TFLint
+    name: Run TFLint
     deps: [install_tflint]
     cmds:
+      - ls -la
       - tflint -c .tflint.hcl --init
       - tflint -c .tflint.hcl --recursive
     preconditions:
       - sh: '[[ "$UCI_TERRAFORM_CHECKS" == "true" ]] && [[ "$UCI_TFLINT_CHECKS" == "true" ]]'
   run_trivy:
-    label: Run Trivy
+    name: Run Trivy
     deps: [install_trivy]
     cmds:
       - trivy config --config .trivy.yaml .
