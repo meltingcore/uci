@@ -3,33 +3,6 @@ description: "A GitHub Action to run plethora of CI checks"
 author: "grumpper"
 
 inputs:
-  # Taskfile version
-  taskfile_version:
-    description: "Taskfile version to use"
-    required: false
-    default: "3.x"
-  # Python related version setup
-  python_version:
-    description: "Python version to use"
-    required: false
-    default: "3.x"
-  pylint_version:
-    description: "pylint version to use"
-    required: false
-    default: ""
-  bandit_version:
-    description: "Bandit version to use"
-    required: false
-    default: ""
-  # Terraform related version setup
-  terraform_version:
-    description: "Terraform version to use"
-    required: false
-    default: "latest"
-  tflint_version:
-    description: "TFLint version to use"
-    required: false
-    default: "latest"
   # Python related feature setup
   python_checks:
     description: "Enable python checks as a whole"
@@ -78,16 +51,11 @@ runs:
       run: task
       env:
         UCI_PYTHON_CHECKS: ${{ inputs.python_checks }}
-        UCI_PYTHON_VERSION: ${{ inputs.python_version }}
         UCI_PYLINT_CHECKS: ${{ inputs.pylint_checks }}
-        UCI_PYLINT_VERSION: ${{ inputs.pylint_version }}
         UCI_BANDIT_CHECKS: ${{ inputs.bandit_checks }}
-        UCI_BANDIT_VERSION: ${{ inputs.bandit_version }}
         UCI_TERRAFORM_CHECKS: ${{ inputs.terraform_checks }}
-        UCI_TERRAFORM_VERSION: ${{ inputs.terraform_version }}
         UCI_TERRAFORM_FMT_CHECKS: ${{ inputs.terraform_fmt_checks }}
         UCI_TFLINT_CHECKS: ${{ inputs.tflint_checks }}
-        UCI_TFLINT_VERSION: ${{ inputs.tflint_version }}
         UCI_TRIVY_CHECKS: ${{ inputs.trivy_checks }}
 
 branding:
