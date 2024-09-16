@@ -3,7 +3,7 @@ version: '3'
 silent: true
 output:
   group:
-    error_only: true
+    # error_only: true
     begin: '::group::{{.TASK}}'
     end: '::endgroup::'
 
