@@ -66,4 +66,4 @@ tasks:
   default:
     deps:
       - run_pylint
-      #- run_bandit
+      - run_bandit
