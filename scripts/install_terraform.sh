@@ -61,6 +61,9 @@ else
   version=${TERRAFORM_VERSION}
 fi
 
+# Remove the 'v' prefix if present
+version=${version#v}
+
 echo "Installing Terraform version: $version"
 
 # Construct the Terraform download URL
