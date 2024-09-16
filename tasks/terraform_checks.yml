@@ -2,6 +2,26 @@ version: '3'
 
 silent: true
 
+env:
+  CLIENT:
+    sh: echo $GITHUB_WORKSPACE
+  ACTION:
+    sh: echo $GITHUB_ACTION_PATH
+  TFLINT_CONFIG:
+    sh: |
+      if [[ -f $GITHUB_WORKSPACE/.tflint.hcl ]]; then
+        echo $GITHUB_WORKSPACE/.tflint.hcl
+      else
+        echo $GITHUB_ACTION_PATH/configs/.tflint.hcl
+      fi
+  TRIVY_CONFIG:
+    sh: |
+      if [[ -f $GITHUB_WORKSPACE/.trivy.yml ]]; then
+        echo $GITHUB_WORKSPACE/.trivy.yml
+      else
+        echo $GITHUB_ACTION_PATH/configs/.trivy.yml
+      fi
+
 dotenv: ['$GITHUB_WORKSPACE/uci.env', '$GITHUB_ACTION_PATH/uci.env']
 
 output:
@@ -20,11 +40,11 @@ tasks:
     preconditions:
       - sh: '[[ "$TERRAFORM_FMT_CHECKS" == "true" ]]'
   install_tflint:
-    name: Install tflint
+    name: Install TFLint
     internal: true
     cmds:
       - curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
-      - tflint --config $GITHUB_WORKSPACE/.tflint.hcl --init
+      - tflint --config {{.TFLINT_CONFIG}} --init
     preconditions:
       - sh: '[[ "$TERRAFORM_TFLINT_CHECKS" == "true" ]]'
   install_trivy:
@@ -47,14 +67,14 @@ tasks:
     name: Run TFLint
     deps: [install_tflint]
     cmds:
-      - tflint --config $GITHUB_WORKSPACE/.tflint.hcl --recursive
+      - tflint --config {{.TFLINT_CONFIG}} --recursive
     preconditions:
       - sh: '[[ "$TERRAFORM_TFLINT_CHECKS" == "true" ]]'
   run_trivy:
     name: Run Trivy
     deps: [install_trivy]
     cmds:
-      - trivy config --config $GITHUB_WORKSPACE/.trivy.yaml .
+      - trivy config --config {{.TRIVY_CONFIG}} .
     preconditions:
       - sh: '[[ "$TERRAFORM_TRIVY_CHECKS" == "true" ]]'
 

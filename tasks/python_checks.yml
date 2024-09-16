@@ -2,7 +2,27 @@ version: '3'
 
 silent: true
 
-dotenv: ['$GITHUB_WORKSPACE/uci.env', '$GITHUB_ACTION_PATH/uci.env']
+env:
+  CLIENT:
+    sh: echo $GITHUB_WORKSPACE
+  ACTION:
+    sh: echo $GITHUB_ACTION_PATH
+  PYLINT_CONFIG:
+    sh: |
+      if [[ -f $GITHUB_WORKSPACE/.pylintrc ]]; then
+        echo $GITHUB_WORKSPACE/.pylintrc
+      else
+        echo $GITHUB_ACTION_PATH/configs/.pylintrc
+      fi
+  BANDIT_CONFIG:
+    sh: |
+      if [[ -f $GITHUB_WORKSPACE/.bandit.yml ]]; then
+        echo $GITHUB_WORKSPACE/.bandit.yml
+      else
+        echo $GITHUB_ACTION_PATH/configs/.bandit.yml
+      fi
+
+dotenv: ['{{.CLIENT}}/uci.env', '{{.ACTION}}/uci.env']
 
 output:
   group:
@@ -43,14 +63,14 @@ tasks:
     name: Run pylint
     deps: [install_pylint]
     cmds:
-      - pylint . --rcfile $GITHUB_WORKSPACE/.pylintrc --recursive=y
+      - pylint . --rcfile {{.PYLINT_CONFIG}} --recursive=y
     preconditions:
       - sh: '[[ "$PYTHON_PYLINT_CHECKS" == "true" ]]'
   run_bandit:
     name: Run bandit
     deps: [install_bandit]
     cmds:
-      - bandit -c $GITHUB_WORKSPACE/.bandit.yml -r .
+      - bandit -c {{.BANDIT_CONFIG}} -r .
     preconditions:
       - sh: '[[ "$PYTHON_BANDIT_CHECKS" == "true" ]]'
 
