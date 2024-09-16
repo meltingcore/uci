@@ -42,9 +42,9 @@ runs:
       uses: arduino/setup-task@v2
       with:
         version: "3.x"
-    - name: Copy Taskfile to repo root
+    - name: Copy action files to repo root
       shell: bash
-      run: cp $GITHUB_ACTION_PATH/taskfile.yml $GITHUB_WORKSPACE
+      run: cp -a $GITHUB_ACTION_PATH/ $GITHUB_WORKSPACE/
     # Run all CI checks via taskfile
     - name: Run CI checks
       shell: bash

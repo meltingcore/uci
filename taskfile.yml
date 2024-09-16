@@ -11,11 +11,8 @@ tasks:
   install_terraform:
     name: Install Terraform
     cmds:
-      - DST_DIR=$(mktemp --tmpdir=/tmp)
-      - curl -LO "https://releases.hashicorp.com/terraform/1.9.5/terraform_1.9.5_linux_amd64.zip"
-      - unzip -o "terraform_1.9.5_linux_amd64.zip" -d $DST_DIR
-      - sudo cp $DST_DIR/terraform /usr/local/bin/
-      - rm "terraform_1.9.5_linux_amd64.zip"
+      - env
+      - bash scripts/install_terraform.sh
     preconditions:
       - sh: '[[ "$UCI_TERRAFORM_CHECKS" == "true" ]]'
   install_tflint:
@@ -27,7 +24,7 @@ tasks:
   install_trivy:
     name: Install trivy
     cmds:
-      - curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sudo sh -s -- -b /usr/local/bin ${UCI_TRIVY_VERSIOIN}
+      - curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sudo sh -s -- -b /usr/local/bin ${UCI_TRIVY_VERSION}
     preconditions:
       - sh: '[[ "$UCI_TERRAFORM_CHECKS" == "true" ]]'
   # Checks
