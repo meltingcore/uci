@@ -13,12 +13,14 @@ tasks:
   python_checks:
     name: Run python checks
     cmds:
+      - echo $GITHUB_ACTION_PATH
       - task -t $GITHUB_ACTION_PATH/tasks/python_checks.yml -v
     preconditions:
       - sh: '[[ "$PYTHON_CHECKS" == "true" ]]'
   terraform_checks:
     name: Run terraform checks
     deps:
+      - echo $GITHUB_ACTION_PATH
       - task -t $GITHUB_ACTION_PATH/tasks/terraform_checks.yml -v
     preconditions:
       - sh: '[[ "$TERRAFORM_CHECKS" == "true" ]]'
