@@ -20,6 +20,10 @@ includes:
     taskfile: ./tasks/terraform_checks.yml
 
 tasks:
+  show_config:
+    desc: Show the configuration
+    cmds:
+      - env | grep -E 'PYTHON_|TERRAFORM_'
   python_checks:
     desc: Run python checks
     deps:
