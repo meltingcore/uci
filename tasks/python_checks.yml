@@ -1,6 +1,13 @@
 version: '3'
 
 silent: true
+
+env:
+  CLIENT_PATH: $GITHUB_WORKSPACE
+  ACTION_PATH: $GITHUB_ACTION_PATH
+
+dotenv: ['{{.CLIENT_PATH}}/.uci.env', '{{.ACTION_PATH}}/uci.env']
+
 output:
   group:
     # error_only: true
@@ -26,7 +33,7 @@ tasks:
     cmds:
       - pip install --user --upgrade pylint
     preconditions:
-      - sh: '[[ "$UCI_PYLINT_CHECKS" == "true" ]]'
+      - sh: '[[ "$PYTHON_PYLINT_CHECKS" == "true" ]]'
     status:
       - pylint --version
   install_bandit:
@@ -36,7 +43,7 @@ tasks:
     cmds:
       - pip install --user --upgrade bandit
     preconditions:
-      - sh: '[[ "$UCI_BANDIT_CHECKS" == "true" ]]'
+      - sh: '[[ "$PYTHON_BANDIT_CHECKS" == "true" ]]'
     status:
       - bandit --version
 
@@ -47,14 +54,14 @@ tasks:
     cmds:
       - pylint . --rcfile .pylintrc --recursive=y
     preconditions:
-      - sh: '[[ "$UCI_PYLINT_CHECKS" == "true" ]]'
+      - sh: '[[ "$PYTHON_PYLINT_CHECKS" == "true" ]]'
   run_bandit:
     name: Run bandit
     deps: [install_bandit]
     cmds:
       - bandit -c .bandit.yml -r .
     preconditions:
-      - sh: '[[ "$UCI_BANDIT_CHECKS" == "true" ]]'
+      - sh: '[[ "$PYTHON_BANDIT_CHECKS" == "true" ]]'
 
   default:
     deps:

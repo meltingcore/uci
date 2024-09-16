@@ -37,17 +37,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    # Setup python
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: "3.x"
-    - name: Install pylint
-      shell: bash
-      run: |
-        python -m pip install --upgrade pip
-        pip install pylint
-        pip install bandit
     # Setup Taskfile
     - name: Set up Taskfile
       uses: arduino/setup-task@v2
@@ -57,14 +46,6 @@ runs:
     - name: Run CI checks
       shell: bash
       run: task -t $GITHUB_ACTION_PATH/taskfile.yml -d $GITHUB_WORKSPACE
-      env:
-        UCI_PYTHON_CHECKS: ${{ inputs.python_checks }}
-        UCI_PYLINT_CHECKS: ${{ inputs.pylint_checks }}
-        UCI_BANDIT_CHECKS: ${{ inputs.bandit_checks }}
-        UCI_TERRAFORM_CHECKS: ${{ inputs.terraform_checks }}
-        UCI_TERRAFORM_FMT_CHECKS: ${{ inputs.terraform_fmt_checks }}
-        UCI_TFLINT_CHECKS: ${{ inputs.tflint_checks }}
-        UCI_TRIVY_CHECKS: ${{ inputs.trivy_checks }}
 
 branding:
   icon: "underline"

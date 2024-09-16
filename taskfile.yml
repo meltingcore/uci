@@ -1,28 +1,39 @@
 version: '3'
 
 silent: true
+
+env:
+  CLIENT_PATH: $GITHUB_WORKSPACE
+  ACTION_PATH: $GITHUB_ACTION_PATH
+
+dotenv: ['{{.CLIENT_PATH}}/.uci.env', '{{.ACTION_PATH}}/uci.env']
+
 output:
   group:
     begin: '::group::{{.TASK}}'
     end: '::endgroup::'
 
 includes:
-  python:
+  python_tasks:
     taskfile: ./tasks/python_checks.yml
-    vars:
-      UCI_PYLINT_CHECKS: $UCI_PYLINT_CHECKS
-      UCI_BANDIT_CHECKS: $UCI_BANDIT_CHECKS
-  terraform:
+  terraform_tasks:
     taskfile: ./tasks/terraform_checks.yml
-    vars:
-      UCI_TERRAFORM_FMT_CHECKS: $UCI_TERRAFORM_FMT_CHECKS
-      UCI_TFLINT_CHECKS: $UCI_TFLINT_CHECKS
-      UCI_TRIVY_CHECKS: $UCI_TRIVY_CHECKS
 
 tasks:
-
-  default:
-    desc: Default task that can be used to trigger the automation
+  python_checks:
+    desc: Run python checks
     deps:
-      - python
-      - terraform
+      - python_tasks
+    preconditions:
+      - sh: '[[ "$PYTHON_CHECKS" == "true" ]]'
+  terraform_checks:
+    desc: Run terraform checks
+    deps:
+      - terraform_tasks
+    preconditions:
+      - sh: '[[ "$TERRAFORM_CHECKS" == "true" ]]'
+  default:
+    desc: Default task used to trigger the automation
+    deps:
+      - python_checks
+      - terraform_checks
