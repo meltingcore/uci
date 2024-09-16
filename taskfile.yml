@@ -25,13 +25,13 @@ tasks:
   python_checks:
     name: Run python checks
     deps:
-      - python_tasks.default
+      - python_tasks:default
     preconditions:
       - sh: '[[ "$PYTHON_CHECKS" == "true" ]]'
   terraform_checks:
     name: Run terraform checks
     deps:
-      - terraform_tasks.default
+      - terraform_tasks:default
     preconditions:
       - sh: '[[ "$TERRAFORM_CHECKS" == "true" ]]'
   default:
