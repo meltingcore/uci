@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -xe
+set -e
 set -o pipefail
 
 # Function to detect machine architecture
@@ -47,7 +47,7 @@ install_python_linux() {
         retries=40
         wait_time=3
 
-        set +xe
+        set +e
         for ((i=1; i<=retries; i++)); do
             if sudo apt-get update; then
                 sudo apt-get install -y python3 python3-pip
@@ -63,7 +63,19 @@ install_python_linux() {
                 exit 1
             fi
         done
-        set -xe
+        set -e
+        # Verify installation
+        echo "Python installed successfully!"
+        echo "Current Python version:"
+        python3 --version
+        echo $?
+
+        # Upgrade pip
+        echo "Upgrading pip ..."
+        python3 -m pip install --upgrade pip
+        echo $?
+
+        echo "Python and pip setup complete!"
     elif command -v dnf >/dev/null; then
         echo "Detected dnf-based system. Installing Python using dnf..."
         sudo dnf install -y python3 python3-pip
@@ -87,16 +99,3 @@ else
   echo "Windows is not supported by this script. Please install Python manually."
   exit 1
 fi
-
-# Verify installation
-echo "===================================================="
-echo "Python installed successfully!"
-echo "Current Python version:"
-python3 --version
-
-# Upgrade pip
-echo "Upgrading pip ..."
-python3 -m pip install --upgrade pip
-
-echo "===================================================="
-echo "Python and pip setup complete!"
