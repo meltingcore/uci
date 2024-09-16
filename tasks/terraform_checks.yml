@@ -38,7 +38,7 @@ tasks:
     name: Install trivy
     internal: true
     cmds:
-      - curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sudo sh -s -- -b /usr/local/bin ${UCI_TRIVY_VERSION}
+      - curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sudo sh -s -- -b /usr/local/bin v0.55.1
     preconditions:
       - sh: '[[ "$TERRAFORM_TRIVY_CHECKS" == "true" ]]'
 
@@ -56,7 +56,7 @@ tasks:
     cmds:
       - tflint --config {{.CLIENT_PATH}}/.tflint.hcl --recursive
     preconditions:
-      - sh: '[[ "$UCI_TFLINT_CHECKS" == "true" ]]'
+      - sh: '[[ "$TERRAFORM_TFLINT_CHECKS" == "true" ]]'
   run_trivy:
     name: Run Trivy
     deps: [install_trivy]

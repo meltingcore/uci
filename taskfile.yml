@@ -6,7 +6,7 @@ env:
   CLIENT_PATH: $GITHUB_WORKSPACE
   ACTION_PATH: $GITHUB_ACTION_PATH
 
-dotenv: ['{{.CLIENT_PATH}}/.uci.env', '{{.ACTION_PATH}}/uci.env']
+dotenv: ['{{.CLIENT_PATH}}/.uci.env', '{{.ACTION_PATH}}/uci.env', 'uci.env']
 
 output:
   group:
@@ -21,23 +21,22 @@ includes:
 
 tasks:
   show_config:
-    desc: Show the configuration
+    name: Show the configuration
     cmds:
       - env | grep -E 'PYTHON_|TERRAFORM_'
   python_checks:
-    desc: Run python checks
+    name: Run python checks
     deps:
       - python_tasks
     preconditions:
       - sh: '[[ "$PYTHON_CHECKS" == "true" ]]'
   terraform_checks:
-    desc: Run terraform checks
+    name: Run terraform checks
     deps:
       - terraform_tasks
     preconditions:
       - sh: '[[ "$TERRAFORM_CHECKS" == "true" ]]'
   default:
-    desc: Default task used to trigger the automation
     deps:
       - python_checks
       - terraform_checks
