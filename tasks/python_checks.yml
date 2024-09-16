@@ -18,7 +18,7 @@ tasks:
     name: Upgrade pip
     internal: true
     cmds:
-      - python -m pip install --upgrade pip
+      - python3 -m pip install --user --upgrade pip
   install_pylint:
     name: Install pylint
     deps: [upgrade_pip]
