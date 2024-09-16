@@ -3,10 +3,6 @@ version: '3'
 silent: true
 
 env:
-  CLIENT:
-    sh: echo $GITHUB_WORKSPACE
-  ACTION:
-    sh: echo $GITHUB_ACTION_PATH
   TFLINT_CONFIG:
     sh: |
       if [[ -f $GITHUB_WORKSPACE/.tflint.hcl ]]; then
@@ -21,8 +17,6 @@ env:
       else
         echo $GITHUB_ACTION_PATH/configs/.trivy.yml
       fi
-
-dotenv: ['$GITHUB_WORKSPACE/uci.env', '$GITHUB_ACTION_PATH/uci.env']
 
 output:
   group:

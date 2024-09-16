@@ -10,6 +10,12 @@ env:
 
 dotenv: ['{{.CLIENT}}/uci.env', '{{.ACTION}}/uci.env']
 
+includes:
+  python_tasks:
+    taskfile: ./tasks/python.yml
+  terraform_tasks:
+    taskfile: ./tasks/terraform.yml
+
 output:
   group:
     begin: '::group::{{.TASK}}'
@@ -18,14 +24,14 @@ output:
 tasks:
   python_checks:
     name: Run python checks
-    cmds:
-      - task -t {{.ACTION}}/tasks/python_checks.yml -v
+    deps:
+      - python_tasks.default
     preconditions:
       - sh: '[[ "$PYTHON_CHECKS" == "true" ]]'
   terraform_checks:
     name: Run terraform checks
-    cmds:
-      - task -t {{.ACTION}}/tasks/terraform_checks.yml -v
+    deps:
+      - terraform_tasks.default
     preconditions:
       - sh: '[[ "$TERRAFORM_CHECKS" == "true" ]]'
   default:
