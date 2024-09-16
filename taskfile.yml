@@ -12,13 +12,13 @@ tasks:
   install_pylint:
     label: Install pylint
     cmds:
-      - pip install pylint
+      - pip3 install pylint
     preconditions:
       - sh: '[[ "$UCI_PYTHON_CHECKS" == "true" ]] && [[ "$UCI_PYLINT_CHECKS" == "true" ]]'
   install_bandit:
     label: Install bandit
     cmds:
-      - pip install bandit
+      - pip3 install bandit
     preconditions:
       - sh: '[[ "$UCI_PYTHON_CHECKS" == "true" ]] && [[ "$UCI_BANDIT_CHECKS" == "true" ]]'
   install_terraform:
