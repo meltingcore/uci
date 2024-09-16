@@ -24,6 +24,11 @@ tasks:
     name: Show the configuration
     cmds:
       - env
+      - echo "Client path: {{.CLIENT_PATH}}"
+      - echo "Action path: {{.ACTION_PATH}}"
+      - echo "Python checks: $PYTHON_CHECKS"
+      - echo "Pylint checks: $PYTHON_PYLINT_CHECKS"
+      - echo "Bandit checks: $PYTHON_BANDIT_CHECKS"
   python_checks:
     name: Run python checks
     deps:
@@ -39,5 +44,5 @@ tasks:
   default:
     deps:
       - show_config
-#       - python_checks
-#       - terraform_checks
+      - python_checks
+      # - terraform_checks
