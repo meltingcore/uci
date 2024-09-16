@@ -14,8 +14,14 @@ tasks:
     internal: true
     cmds:
       - env
+  upgrade_pip:
+    name: Upgrade pip
+    internal: true
+    cmds:
+      - python -m pip install --upgrade pip
   install_pylint:
     name: Install pylint
+    deps: [upgrade_pip]
     internal: true
     cmds:
       - pip install pylint
@@ -23,6 +29,7 @@ tasks:
       - sh: '[[ "$UCI_PYLINT_CHECKS" == "true" ]]'
   install_bandit:
     name: Install bandit
+    deps: [upgrade_pip]
     internal: true
     cmds:
       - pip install bandit
