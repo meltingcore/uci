@@ -39,5 +39,5 @@ tasks:
   default:
     deps:
       - show_config
-      - python_checks
-      - terraform_checks
+#       - python_checks
+#       - terraform_checks

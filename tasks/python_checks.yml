@@ -14,11 +14,6 @@ output:
 
 tasks:
   # Installations
-  check_env:
-    name: Check environment
-    internal: true
-    cmds:
-      - env
   upgrade_pip:
     name: Upgrade pip
     internal: true
