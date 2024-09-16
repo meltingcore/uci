@@ -10,13 +10,13 @@ tasks:
   python_checks:
     name: Run Python Checks
     cmds:
-      - task -t tasks/python_checks.yml
+      - task -t $GITHUB_ACTION_PATH/tasks/python_checks.yml -d $GITHUB_WORKSPACE
     preconditions:
       sh: '[[ "$UCI_PYTHON_CHECKS" == "true" ]]'
   terraform_checks:
     name: Run Terraform Checks
     cmds:
-      - task -t tasks/terraform_checks.yml
+      - task -t $GITHUB_ACTION_PATH/tasks/terraform_checks.yml -d $GITHUB_WORKSPACE
     preconditions:
       sh: '[[ "$UCI_TERRAFORM_CHECKS" == "true" ]]'
 
