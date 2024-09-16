@@ -12,13 +12,13 @@ tasks:
   install_pylint:
     name: Install pylint
     cmds:
-      - pip3 install pylint
+      - python3 -m pip install pylint
     preconditions:
       - sh: '[[ "$UCI_PYTHON_CHECKS" == "true" ]] && [[ "$UCI_PYLINT_CHECKS" == "true" ]]'
   install_bandit:
     name: Install bandit
     cmds:
-      - pip3 install bandit
+      - python3 -m install bandit
     preconditions:
       - sh: '[[ "$UCI_PYTHON_CHECKS" == "true" ]] && [[ "$UCI_BANDIT_CHECKS" == "true" ]]'
   install_terraform:
@@ -66,9 +66,8 @@ tasks:
     name: Run TFLint
     deps: [install_tflint]
     cmds:
-      - ls -la
-      - tflint -c .tflint.hcl --init
-      - tflint -c .tflint.hcl --recursive
+      - tflint --config "$(pwd)/.tflint.hcl" --init
+      - tflint --config "$(pwd)/.tflint.hcl" --recursive
     preconditions:
       - sh: '[[ "$UCI_TERRAFORM_CHECKS" == "true" ]] && [[ "$UCI_TFLINT_CHECKS" == "true" ]]'
   run_trivy:
