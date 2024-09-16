@@ -23,7 +23,7 @@ tasks:
   show_config:
     name: Show the configuration
     cmds:
-      - env | grep -E 'PYTHON_|TERRAFORM_'
+      - env
   python_checks:
     name: Run python checks
     deps:
