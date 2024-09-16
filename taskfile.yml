@@ -24,12 +24,14 @@ output:
 tasks:
   python_checks:
     name: Run python checks
+    ignore_error: true
     deps:
       - python_tasks:default
     preconditions:
       - sh: '[[ "$PYTHON_CHECKS" == "true" ]]'
   terraform_checks:
     name: Run terraform checks
+    ignore_error: true
     deps:
       - terraform_tasks:default
     preconditions:

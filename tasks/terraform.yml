@@ -20,7 +20,7 @@ env:
 
 output:
   group:
-    # error_only: true
+    error_only: true
     begin: '::group::{{.TASK}}'
     end: '::endgroup::'
 
