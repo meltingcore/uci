@@ -18,7 +18,7 @@ tasks:
   install_bandit:
     name: Install bandit
     cmds:
-      - python3 -m install bandit
+      - python3 -m pip install bandit
     preconditions:
       - sh: '[[ "$UCI_PYTHON_CHECKS" == "true" ]] && [[ "$UCI_BANDIT_CHECKS" == "true" ]]'
   install_terraform:
