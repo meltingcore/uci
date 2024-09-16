@@ -6,8 +6,6 @@ env:
   CLIENT_PATH: $GITHUB_WORKSPACE
   ACTION_PATH: $GITHUB_ACTION_PATH
 
-dotenv: ['{{.CLIENT_PATH}}/.uci.env', '{{.ACTION_PATH}}/uci.env']
-
 output:
   group:
     # error_only: true
