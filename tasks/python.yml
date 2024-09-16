@@ -52,14 +52,14 @@ tasks:
     name: Run pylint
     deps: [install_pylint]
     cmds:
-      - pylint . --rcfile {{.PYLINT_CONFIG}} --recursive=y
+      - pylint --rcfile {{.PYLINT_CONFIG}} --recursive=y $GITHUB_WORKSPACE
     preconditions:
       - sh: '[[ "$PYTHON_PYLINT_CHECKS" == "true" ]]'
   run_bandit:
     name: Run bandit
     deps: [install_bandit]
     cmds:
-      - bandit -c {{.BANDIT_CONFIG}} -r .
+      - bandit -c {{.BANDIT_CONFIG}} -r $GITHUB_WORKSPACE
     preconditions:
       - sh: '[[ "$PYTHON_BANDIT_CHECKS" == "true" ]]'
 
