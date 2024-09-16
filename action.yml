@@ -41,7 +41,7 @@ runs:
     - name: Set up Taskfile
       uses: arduino/setup-task@v2
       with:
-        version: ${{ inputs.taskfile_version }}
+        version: "3.x"
     - name: Copy Taskfile to repo root
       shell: bash
       run: cp $GITHUB_ACTION_PATH/taskfile.yml $GITHUB_WORKSPACE
