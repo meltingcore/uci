@@ -24,7 +24,7 @@ tasks:
     deps: [upgrade_pip]
     internal: true
     cmds:
-      - pip install -U pylint
+      - pip install --user --upgrade pylint
     preconditions:
       - sh: '[[ "$UCI_PYLINT_CHECKS" == "true" ]]'
     status:
@@ -34,7 +34,7 @@ tasks:
     deps: [upgrade_pip]
     internal: true
     cmds:
-      - pip install -U bandit
+      - pip install --user --upgrade bandit
     preconditions:
       - sh: '[[ "$UCI_BANDIT_CHECKS" == "true" ]]'
     status:
