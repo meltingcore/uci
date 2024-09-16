@@ -9,12 +9,18 @@ output:
 
 tasks:
   # Installations
-  install_python:
-    label: Install Python & pip
+  install_pylint:
+    label: Install pylint
     cmds:
-      - bash $GITHUB_ACTION_PATH/scripts/install_python.sh
+      - pip install pylint
     preconditions:
-      - sh: '[[ "$UCI_PYTHON_CHECKS" == "true" ]]'
+      - sh: '[[ "$UCI_PYTHON_CHECKS" == "true" ]] && [[ "$UCI_PYLINT_CHECKS" == "true" ]]'
+  install_bandit:
+    label: Install bandit
+    cmds:
+      - pip install bandit
+    preconditions:
+      - sh: '[[ "$UCI_PYTHON_CHECKS" == "true" ]] && [[ "$UCI_BANDIT_CHECKS" == "true" ]]'
   install_terraform:
     label: Install Terraform
     cmds:
@@ -60,8 +66,6 @@ tasks:
     label: Run TFLint
     deps: [install_tflint]
     cmds:
-      - echo $PWD
-      - ls -l
       - tflint -c .tflint.hcl --init
       - tflint -c .tflint.hcl --recursive
     preconditions:
