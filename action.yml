@@ -42,13 +42,10 @@ runs:
       uses: arduino/setup-task@v2
       with:
         version: "3.x"
-    - name: Copy action files to repo root
-      shell: bash
-      run: cp -r $GITHUB_ACTION_PATH/* $GITHUB_WORKSPACE/
     # Run all CI checks via taskfile
     - name: Run CI checks
       shell: bash
-      run: task
+      run: task $GITHUB_ACTION_PATH/taskfile.yml
       env:
         UCI_PYTHON_CHECKS: ${{ inputs.python_checks }}
         UCI_PYLINT_CHECKS: ${{ inputs.pylint_checks }}

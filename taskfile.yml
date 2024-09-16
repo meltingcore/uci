@@ -12,13 +12,13 @@ tasks:
   install_python:
     label: Install Python & pip
     cmds:
-      - bash scripts/install_python.sh
+      - bash $GITHUB_ACTION_PATH/scripts/install_python.sh
     preconditions:
       - sh: '[[ "$UCI_PYTHON_CHECKS" == "true" ]]'
   install_terraform:
     label: Install Terraform
     cmds:
-      - bash scripts/install_terraform.sh
+      - bash $GITHUB_ACTION_PATH/scripts/install_terraform.sh
     preconditions:
       - sh: '[[ "$UCI_TERRAFORM_CHECKS" == "true" ]]'
   install_tflint:
