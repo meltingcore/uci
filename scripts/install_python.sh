@@ -51,7 +51,6 @@ install_python_linux() {
         for ((i=1; i<=retries; i++)); do
             if sudo apt-get update; then
                 sudo apt-get install -y python3 python3-pip
-                break
             else
                 echo "Attempt $i: Could not get lock, retrying in $wait_time seconds..."
                 sleep $wait_time
@@ -64,16 +63,11 @@ install_python_linux() {
             fi
         done
         set -e
-        # Verify installation
         echo "Python installed successfully!"
         echo "Current Python version:"
         python3 --version
-        echo $?
-
-        # Upgrade pip
         echo "Upgrading pip ..."
         python3 -m pip install --upgrade pip
-        echo $?
 
         echo "Python and pip setup complete!"
     elif command -v dnf >/dev/null; then
