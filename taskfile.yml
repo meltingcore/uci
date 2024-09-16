@@ -42,14 +42,14 @@ tasks:
   # Python Checks
   run_pylint:
     label: Run pylint
-    deps: [install_python]
+    deps: [install_pylint]
     cmds:
       - pylint . --rcfile .pylintrc --recursive=y
     preconditions:
       - sh: '[[ "$UCI_PYTHON_CHECKS" == "true" ]] && [[ "$UCI_PYLINT_CHECKS" == "true" ]]'
   run_bandit:
     label: Run bandit
-    deps: [install_python]
+    deps: [install_bandit]
     cmds:
       - bandit -c .bandit.yml -r .
     preconditions:
