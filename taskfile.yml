@@ -38,5 +38,6 @@ tasks:
       - sh: '[[ "$TERRAFORM_CHECKS" == "true" ]]'
   default:
     deps:
+      - show_config
       - python_checks
       - terraform_checks
