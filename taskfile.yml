@@ -11,30 +11,36 @@ tasks:
   # Installations
   install_pylint:
     name: Install pylint
+    internal: true
     cmds:
       - python3 -m pip install pylint
     preconditions:
       - sh: '[[ "$UCI_PYTHON_CHECKS" == "true" ]] && [[ "$UCI_PYLINT_CHECKS" == "true" ]]'
   install_bandit:
     name: Install bandit
+    internal: true
     cmds:
       - python3 -m pip install bandit
     preconditions:
       - sh: '[[ "$UCI_PYTHON_CHECKS" == "true" ]] && [[ "$UCI_BANDIT_CHECKS" == "true" ]]'
   install_terraform:
     name: Install Terraform
+    internal: true
     cmds:
       - bash $GITHUB_ACTION_PATH/scripts/install_terraform.sh
     preconditions:
       - sh: '[[ "$UCI_TERRAFORM_CHECKS" == "true" ]]'
   install_tflint:
     name: Install tflint
+    internal: true
     cmds:
       - curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
+      - tflint --config "$(pwd)/.tflint.hcl" --init
     preconditions:
       - sh: '[[ "$UCI_TERRAFORM_CHECKS" == "true" ]]'
   install_trivy:
     name: Install trivy
+    internal: true
     cmds:
       - curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sudo sh -s -- -b /usr/local/bin ${UCI_TRIVY_VERSION}
     preconditions:
@@ -66,7 +72,6 @@ tasks:
     name: Run TFLint
     deps: [install_tflint]
     cmds:
-      - tflint --config "$(pwd)/.tflint.hcl" --init
       - tflint --config "$(pwd)/.tflint.hcl" --recursive
     preconditions:
       - sh: '[[ "$UCI_TERRAFORM_CHECKS" == "true" ]] && [[ "$UCI_TFLINT_CHECKS" == "true" ]]'
