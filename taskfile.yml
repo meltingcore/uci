@@ -6,21 +6,23 @@ output:
     begin: '::group::{{.TASK}}'
     end: '::endgroup::'
 
+includes:
+  python:
+    taskfile: ./tasks/python_checks.yml
+    vars:
+      UCI_PYLINT_CHECKS: $UCI_PYLINT_CHECKS
+      UCI_BANDIT_CHECKS: $UCI_BANDIT_CHECKS
+  terraform:
+    taskfile: ./tasks/terraform_checks.yml
+    vars:
+      UCI_TERRAFORM_FMT_CHECKS: $UCI_TERRAFORM_FMT_CHECKS
+      UCI_TFLINT_CHECKS: $UCI_TFLINT_CHECKS
+      UCI_TRIVY_CHECKS: $UCI_TRIVY_CHECKS
+
 tasks:
-  python_checks:
-    name: Run Python Checks
-    cmds:
-      - task -t $GITHUB_ACTION_PATH/tasks/python_checks.yml -d $GITHUB_WORKSPACE
+  python:default:
     preconditions:
       sh: '[[ "$UCI_PYTHON_CHECKS" == "true" ]]'
-  terraform_checks:
-    name: Run Terraform Checks
-    cmds:
-      - task -t $GITHUB_ACTION_PATH/tasks/terraform_checks.yml -d $GITHUB_WORKSPACE
+  terraform:default:
     preconditions:
       sh: '[[ "$UCI_TERRAFORM_CHECKS" == "true" ]]'
-
-  default:
-    deps:
-      - python_checks
-      - terraform_checks
