@@ -55,7 +55,7 @@ tasks:
 
   run_tflint:
     name: Run tflint
-    deps: [tflint]
+    deps: [install_tflint]
     cmds:
       - tflint -c .tflint.hcl --init
       - tflint -c .tflint.hcl --recursive
