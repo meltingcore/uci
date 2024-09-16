@@ -11,9 +11,10 @@ tasks:
   install_terraform:
     name: Install Terraform
     cmds:
+      - DST_DIR=$(mktemp --tmpdir=/tmp)
       - curl -LO "https://releases.hashicorp.com/terraform/1.9.5/terraform_1.9.5_linux_amd64.zip"
-      - unzip -o "terraform_1.9.5_linux_amd64.zip"
-      - sudo mv terraform /usr/local/bin/
+      - unzip -o "terraform_1.9.5_linux_amd64.zip" -d $DST_DIR
+      - sudo cp $DST_DIR/terraform /usr/local/bin/
       - rm "terraform_1.9.5_linux_amd64.zip"
     preconditions:
       - sh: '[[ "$UCI_TERRAFORM_CHECKS" == "true" ]]'
