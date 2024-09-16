@@ -5,14 +5,14 @@ tasks:
   install_pip:
     name: Install pip
     cmds:
-      - python3 -m pip install --upgrade pip
+      - python -m pip install --upgrade pip
     preconditions:
       - sh: '[[ "$UCI_PYTHON_CHECKS" == "true" ]]'
   install_terraform:
     name: Install Terraform
     cmds:
       - curl -LO "https://releases.hashicorp.com/terraform/1.9.5/terraform_1.9.5_linux_amd64.zip"
-      - unzip "terraform_1.9.5_linux_amd64.zip"
+      - unzip -o "terraform_1.9.5_linux_amd64.zip"
       - sudo mv terraform /usr/local/bin/
       - rm "terraform_1.9.5_linux_amd64.zip"
     preconditions:
