@@ -22,7 +22,7 @@ includes:
 tasks:
   python:default:
     preconditions:
-      sh: '[[ "$UCI_PYTHON_CHECKS" == "true" ]]'
+      - sh: '[[ "$UCI_PYTHON_CHECKS" == "true" ]]'
   terraform:default:
     preconditions:
-      sh: '[[ "$UCI_TERRAFORM_CHECKS" == "true" ]]'
+      - sh: '[[ "$UCI_TERRAFORM_CHECKS" == "true" ]]'
