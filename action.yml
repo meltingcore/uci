@@ -37,6 +37,11 @@ inputs:
 runs:
   using: "composite"
   steps:
+    # Setup python
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.x"
     # Setup Taskfile
     - name: Set up Taskfile
       uses: arduino/setup-task@v2

@@ -14,12 +14,6 @@ tasks:
     internal: true
     cmds:
       - env
-  setup_venv:
-    name: Setup virtual environment
-    internal: true
-    cmds:
-      - python3 -m venv venv
-      - source venv/bin/activate
   install_pylint:
     name: Install pylint
     deps: [setup_venv]

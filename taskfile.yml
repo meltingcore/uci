@@ -20,6 +20,7 @@ includes:
       UCI_TRIVY_CHECKS: $UCI_TRIVY_CHECKS
 
 tasks:
+
   default:
     desc: Default task that can be used to trigger the automation
     deps:
