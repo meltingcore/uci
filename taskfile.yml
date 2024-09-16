@@ -2,47 +2,27 @@ version: '3'
 
 silent: true
 
-env:
-  CLIENT_PATH: $GITHUB_WORKSPACE
-  ACTION_PATH: $GITHUB_ACTION_PATH
-
-dotenv: ['{{.CLIENT_PATH}}/.uci.env', '{{.ACTION_PATH}}/uci.env']
+dotenv: ['$GITHUB_WORKSPACE/uci.env', '$GITHUB_ACTION_PATH/uci.env']
 
 output:
   group:
     begin: '::group::{{.TASK}}'
     end: '::endgroup::'
 
-includes:
-  python_tasks:
-    taskfile: ./tasks/python_checks.yml
-  terraform_tasks:
-    taskfile: ./tasks/terraform_checks.yml
-
 tasks:
-  show_config:
-    name: Show the configuration
-    cmds:
-      - env
-      - echo $CLIENT_PATH
-      - echo $ACTION_PATH
-      - echo $PYTHON_CHECKS
-      - echo $PYTHON_PYLINT_CHECKS
-      - echo $PYTHON_BANDIT_CHECKS
   python_checks:
     name: Run python checks
-    deps:
-      - python_tasks
+    cmds:
+      - task -t $GITHUB_ACTION_PATH/tasks/python_checks.yml -v
     preconditions:
       - sh: '[[ "$PYTHON_CHECKS" == "true" ]]'
   terraform_checks:
     name: Run terraform checks
     deps:
-      - terraform_tasks
+      - task -t $GITHUB_ACTION_PATH/tasks/terraform_checks.yml -v
     preconditions:
       - sh: '[[ "$TERRAFORM_CHECKS" == "true" ]]'
   default:
     deps:
-      - show_config
       - python_checks
-      # - terraform_checks
+      - terraform_checks
