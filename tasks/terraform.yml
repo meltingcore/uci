@@ -67,7 +67,7 @@ tasks:
     name: Run Trivy
     deps: [install_trivy]
     cmds:
-      - trivy config --config {{.TRIVY_CONFIG}} .
+      - trivy config -c {{.TRIVY_CONFIG}} -f sarif $GITHUB_WORKSPACE/
     preconditions:
       - sh: '[[ "$TERRAFORM_TRIVY_CHECKS" == "true" ]]'
 
