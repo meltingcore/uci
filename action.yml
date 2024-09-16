@@ -44,7 +44,7 @@ runs:
         version: "3.x"
     - name: Copy action files to repo root
       shell: bash
-      run: cp -a $GITHUB_ACTION_PATH/ $GITHUB_WORKSPACE/
+      run: cp -r $GITHUB_ACTION_PATH/* $GITHUB_WORKSPACE/
     # Run all CI checks via taskfile
     - name: Run CI checks
       shell: bash
