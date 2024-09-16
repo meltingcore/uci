@@ -9,6 +9,11 @@ output:
 
 tasks:
   # Installations
+  check_env:
+    name: Check environment
+    internal: true
+    cmds:
+      - env
   install_pylint:
     name: Install pylint
     internal: true
