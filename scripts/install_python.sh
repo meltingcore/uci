@@ -47,6 +47,7 @@ install_python_linux() {
         retries=40
         wait_time=3
 
+        set +e
         for ((i=1; i<=retries; i++)); do
             if sudo apt-get update; then
                 sudo apt-get install -y python3 python3-pip
@@ -62,6 +63,7 @@ install_python_linux() {
                 exit 1
             fi
         done
+        set -e
     elif command -v dnf >/dev/null; then
         echo "Detected dnf-based system. Installing Python using dnf..."
         sudo dnf install -y python3 python3-pip
