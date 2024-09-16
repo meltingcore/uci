@@ -39,7 +39,6 @@ esac
 echo "Detected OS: $os"
 
 # Function to install Python on Linux using package managers
-# Function to install Python on Linux using package managers
 install_python_linux() {
     if command -v apt-get >/dev/null; then
         echo "Detected apt-based system. Installing Python using apt..."

@@ -45,7 +45,7 @@ runs:
     # Run all CI checks via taskfile
     - name: Run CI checks
       shell: bash
-      run: echo $PWD && ls -l && task -t $GITHUB_ACTION_PATH/taskfile.yml
+      run: task -t $GITHUB_ACTION_PATH/taskfile.yml -d $GITHUB_WORKSPACE
       env:
         UCI_PYTHON_CHECKS: ${{ inputs.python_checks }}
         UCI_PYLINT_CHECKS: ${{ inputs.pylint_checks }}
