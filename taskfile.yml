@@ -11,6 +11,7 @@ tasks:
   install_terraform:
     name: Install Terraform
     cmds:
+      - if [[ "$UCI_TERRAFORM_VERSION" == "latest" ]]; then UCI_TERRAFORM_VERSION=$(curl -s https://api.github.com/repos/hashicorp/terraform/releases/latest | jq -r '.tag_name' | sed 's/v//'); fi
       - curl -LO "https://releases.hashicorp.com/terraform/${UCI_TERRAFORM_VERSION}/terraform_${UCI_TERRAFORM_VERSION}_linux_amd64.zip"
       - unzip "terraform_${UCI_TERRAFORM_VERSION}_linux_amd64.zip"
       - sudo mv terraform /usr/local/bin/
