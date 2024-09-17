@@ -39,7 +39,7 @@ tasks:
     cmds:
       - pip install --user --upgrade pylint
     status:
-      - 'if [[ "$UCI_PYTHON_PYLINT_CHECKS" == "true" ]]; then exit 1; fi'
+      - bash $GITHUB_ACTION_PATH/scripts/evaluate.sh $UCI_PYTHON_PYLINT_CHECKS
   install_bandit:
     name: Install bandit
     run: once
@@ -48,7 +48,7 @@ tasks:
     cmds:
       - pip install --user --upgrade bandit
     status:
-      - 'if [[ "$UCI_PYTHON_BANDIT_CHECKS" == "true" ]]; then exit 1; fi'
+      - bash $GITHUB_ACTION_PATH/scripts/evaluate.sh $UCI_PYTHON_BANDIT_CHECKS
 
   # Checks
   run_pylint:
@@ -58,7 +58,7 @@ tasks:
     cmds:
       - pylint --rcfile {{.PYLINT_CONFIG}} --recursive=y $GITHUB_WORKSPACE
     status:
-      - 'if [[ "$UCI_PYTHON_PYLINT_CHECKS" == "true" ]]; then exit 1; fi'
+      - bash $GITHUB_ACTION_PATH/scripts/evaluate.sh $UCI_PYTHON_PYLINT_CHECKS
   run_bandit:
     name: Run bandit
     run: once
@@ -66,7 +66,7 @@ tasks:
     cmds:
       - bandit -c {{.BANDIT_CONFIG}} -r $GITHUB_WORKSPACE
     status:
-      - 'if [[ "$UCI_PYTHON_BANDIT_CHECKS" == "true" ]]; then exit 1; fi'
+      - bash $GITHUB_ACTION_PATH/scripts/evaluate.sh $UCI_PYTHON_BANDIT_CHECKS
 
   default:
     run: once

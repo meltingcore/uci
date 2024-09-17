@@ -32,7 +32,7 @@ tasks:
     cmds:
       - bash $GITHUB_ACTION_PATH/scripts/install_terraform.sh
     status:
-      - 'if [[ "$UCI_TERRAFORM_FMT_CHECKS" == "true" ]]; then exit 1; fi'
+      - bash $GITHUB_ACTION_PATH/scripts/evaluate.sh $UCI_TERRAFORM_FMT_CHECKS
   install_tflint:
     name: Install TFLint
     run: once
@@ -42,7 +42,7 @@ tasks:
         curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
         tflint --config {{.TFLINT_CONFIG}} --init
     status:
-      - 'if [[ "$UCI_TERRAFORM_TFLINT_CHECKS" == "true" ]]; then exit 1; fi'
+      - bash $GITHUB_ACTION_PATH/scripts/evaluate.sh $UCI_TERRAFORM_TFLINT_CHECKS
   install_trivy:
     name: Install trivy
     run: once
@@ -50,7 +50,7 @@ tasks:
     cmds:
       - curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sudo sh -s -- -b /usr/local/bin $UCI_TERRAFORM_TRIVY_VERSION
     status:
-      - 'if [[ "$UCI_TERRAFORM_TRIVY_CHECKS" == "true" ]]; then exit 1; fi'
+      - bash $GITHUB_ACTION_PATH/scripts/evaluate.sh $UCI_TERRAFORM_TRIVY_CHECKS
 
   # Checks
   run_terraform_fmt:
@@ -60,7 +60,7 @@ tasks:
     cmds:
       - terraform fmt -recursive $GITHUB_WORKSPACE
     status:
-      - 'if [[ "$UCI_TERRAFORM_FMT_CHECKS" == "true" ]]; then exit 1; fi'
+      - bash $GITHUB_ACTION_PATH/scripts/evaluate.sh $UCI_TERRAFORM_FMT_CHECKS
   run_tflint:
     name: Run TFLint
     run: once
@@ -68,15 +68,15 @@ tasks:
     cmds:
       - tflint --config {{.TFLINT_CONFIG}} --recursive
     status:
-      - 'if [[ "$UCI_TERRAFORM_TFLINT_CHECKS" == "true" ]]; then exit 1; fi'
+      - bash $GITHUB_ACTION_PATH/scripts/evaluate.sh $UCI_TERRAFORM_TFLINT_CHECKS
   run_trivy:
     name: Run Trivy
     run: once
     deps: [install_trivy]
     cmds:
-      - trivy config -c {{.TRIVY_CONFIG}} $GITHUB_WORKSPACE/ | tee -a $GITHUB_STEP_SUMMARY
+      - trivy config -c {{.TRIVY_CONFIG}} $GITHUB_WORKSPACE/
     status:
-      - 'if [[ "$UCI_TERRAFORM_TRIVY_CHECKS" == "true" ]]; then exit 1; fi'
+      - bash $GITHUB_ACTION_PATH/scripts/evaluate.sh $UCI_TERRAFORM_TRIVY_CHECKS
 
   default:
     deps:
