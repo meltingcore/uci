@@ -60,7 +60,6 @@ tasks:
     run: once
     deps: [install_terraform]
     cmds:
-      - echo "Running terraform fmt"
       - terraform fmt -recursive $GITHUB_WORKSPACE
     status:
       - '[[ $UCI_TERRAFORM_FMT_CHECKS != "true" ]]'
@@ -70,7 +69,6 @@ tasks:
     run: once
     deps: [install_tflint]
     cmds:
-      - echo "Running tflint"
       - tflint --config {{.TFLINT_CONFIG}} --chdir $GITHUB_WORKSPACE --recursive
     status:
       - '[[ $UCI_TERRAFORM_TFLINT_CHECKS != "true" ]]'
@@ -80,7 +78,6 @@ tasks:
     run: once
     deps: [install_trivy]
     cmds:
-      - echo "Running trivy"
       - trivy config -c {{.TRIVY_CONFIG}} $GITHUB_WORKSPACE/
     status:
       - '[[ $UCI_TERRAFORM_TRIVY_CHECKS != "true" ]]'
