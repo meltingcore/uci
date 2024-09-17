@@ -8,6 +8,19 @@ output:
     end: '::endgroup::'
 
 tasks:
+  generate_config:
+    name: Print the runtime UCI configuration
+    run: once
+    cmds:
+      - |
+        printf '## UCI Configuration \n' >> $GITHUB_STEP_SUMMARY
+        printf '```dotenv \n' >> $GITHUB_STEP_SUMMARY
+        env | grep ^UCI_ | sort -u | tee -a $GITHUB_STEP_SUMMARY
+        printf '``` \n' >> $GITHUB_STEP_SUMMARY
+
   default:
     deps:
+      - generate_config
+    run: once
+    cmds:
       - echo "Generate Summary for GitHub Actions (placeholder)"
