@@ -18,12 +18,10 @@ includes:
   summary_tasks:
     taskfile: ./tasks/summary.yml
 
-output: prefixed
-
-#   group:
-#     error_only: true
-#     begin: '::group::{{.TASK}}'
-#     end: '::endgroup::'
+output:
+  group:
+    begin: '::group::{{.TASK}}'
+    end: '::endgroup::'
 
 tasks:
   python_checks:
