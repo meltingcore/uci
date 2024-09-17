@@ -28,10 +28,10 @@ tasks:
     run: once
     cmds:
       - |
-      echo "## Runtime Configuration" >> $GITHUB_STEP_SUMMARY
-      echo "```shell" >> $GITHUB_STEP_SUMMARY
-      bash $GITHUB_ACTION_PATH/scripts/print_configuration.sh >> $GITHUB_STEP_SUMMARY
-      echo "```" >> $GITHUB_STEP_SUMMARY
+        echo "## Runtime Configuration" >> $GITHUB_STEP_SUMMARY
+        echo "```shell" >> $GITHUB_STEP_SUMMARY
+        bash $GITHUB_ACTION_PATH/scripts/print_configuration.sh >> $GITHUB_STEP_SUMMARY
+        echo "```" >> $GITHUB_STEP_SUMMARY
 
   python_checks:
     name: Run python checks
