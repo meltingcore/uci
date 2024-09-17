@@ -27,54 +27,48 @@ tasks:
   # Installations
   upgrade_pip:
     name: Upgrade pip
-    ignore_error: true
     run: once
     internal: true
     cmds:
       - python3 -m pip install --user --upgrade pip
   install_pylint:
     name: Install pylint
-    ignore_error: true
     run: once
     deps: [upgrade_pip]
     internal: true
     cmds:
       - pip install --user --upgrade pylint
     status:
-      - bash $GITHUB_ACTION_PATH/scripts/evaluate.sh $UCI_PYTHON_PYLINT_CHECKS
+      - '[[ $UCI_PYTHON_PYLINT_CHECKS != "true" ]]'
   install_bandit:
     name: Install bandit
-    ignore_error: true
     run: once
     deps: [upgrade_pip]
     internal: true
     cmds:
       - pip install --user --upgrade bandit
     status:
-      - bash $GITHUB_ACTION_PATH/scripts/evaluate.sh $UCI_PYTHON_BANDIT_CHECKS
+      - '[[ $UCI_PYTHON_BANDIT_CHECKS != "true" ]]'
 
   # Checks
   run_pylint:
     name: Run pylint
-    ignore_error: true
     run: once
     deps: [install_pylint]
     cmds:
       - pylint --rcfile {{.PYLINT_CONFIG}} --recursive=y $GITHUB_WORKSPACE
     status:
-      - bash $GITHUB_ACTION_PATH/scripts/evaluate.sh $UCI_PYTHON_PYLINT_CHECKS
+      - '[[ $UCI_PYTHON_PYLINT_CHECKS != "true" ]]'
   run_bandit:
     name: Run bandit
-    ignore_error: true
     run: once
     deps: [install_bandit]
     cmds:
       - bandit -c {{.BANDIT_CONFIG}} -r $GITHUB_WORKSPACE
     status:
-      - bash $GITHUB_ACTION_PATH/scripts/evaluate.sh $UCI_PYTHON_BANDIT_CHECKS
+      - '[[ $UCI_PYTHON_BANDIT_CHECKS != "true" ]]'
 
   default:
-    ignore_error: true
     run: once
     deps:
       - run_pylint

@@ -32,7 +32,7 @@ tasks:
     deps:
       - python_tasks:default
     status:
-      - bash $GITHUB_ACTION_PATH/scripts/evaluate.sh $UCI_PYTHON_CHECKS
+      - '[[ $UCI_PYTHON_CHECKS != "true" ]]'
 
   terraform_checks:
     name: Run terraform checks
@@ -41,7 +41,7 @@ tasks:
     deps:
       - terraform_tasks:default
     status:
-      - bash $GITHUB_ACTION_PATH/scripts/evaluate.sh $UCI_TERRAFORM_CHECKS
+      - '[[ $UCI_TERRAFORM_CHECKS != "true" ]]'
 
   run_checks:
     ignore_error: true

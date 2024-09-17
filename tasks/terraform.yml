@@ -27,16 +27,14 @@ tasks:
   # Installations
   install_terraform:
     name: Install Terraform
-    ignore_error: true
     run: once
     internal: true
     cmds:
       - bash $GITHUB_ACTION_PATH/scripts/install_terraform.sh
     status:
-      - bash $GITHUB_ACTION_PATH/scripts/evaluate.sh $UCI_TERRAFORM_FMT_CHECKS
+      - '[[ $UCI_TERRAFORM_FMT_CHECKS != "true" ]]'
   install_tflint:
     name: Install TFLint
-    ignore_error: true
     run: once
     internal: true
     cmds:
@@ -44,7 +42,7 @@ tasks:
         curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
         tflint --config {{.TFLINT_CONFIG}} --init
     status:
-      - bash $GITHUB_ACTION_PATH/scripts/evaluate.sh $UCI_TERRAFORM_TFLINT_CHECKS
+      - '[[ $UCI_TERRAFORM_TFLINT_CHECKS != "true" ]]'
   install_trivy:
     name: Install trivy
     ignore_error: true
@@ -53,7 +51,7 @@ tasks:
     cmds:
       - curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sudo sh -s -- -b /usr/local/bin $UCI_TERRAFORM_TRIVY_VERSION
     status:
-      - bash $GITHUB_ACTION_PATH/scripts/evaluate.sh $UCI_TERRAFORM_TRIVY_CHECKS
+      - '[[ $UCI_TERRAFORM_TRIVY_CHECKS != "true" ]]'
 
   # Checks
   run_terraform_fmt:
@@ -64,7 +62,7 @@ tasks:
     cmds:
       - terraform fmt -recursive $GITHUB_WORKSPACE
     status:
-      - bash $GITHUB_ACTION_PATH/scripts/evaluate.sh $UCI_TERRAFORM_FMT_CHECKS
+      - '[[ $UCI_TERRAFORM_FMT_CHECKS != "true" ]]'
   run_tflint:
     name: Run TFLint
     ignore_error: true
@@ -73,7 +71,7 @@ tasks:
     cmds:
       - tflint --config {{.TFLINT_CONFIG}} --recursive
     status:
-      - bash $GITHUB_ACTION_PATH/scripts/evaluate.sh $UCI_TERRAFORM_TFLINT_CHECKS
+      - '[[ $UCI_TERRAFORM_TFLINT_CHECKS != "true" ]]'
   run_trivy:
     name: Run Trivy
     ignore_error: true
@@ -82,7 +80,7 @@ tasks:
     cmds:
       - trivy config -c {{.TRIVY_CONFIG}} $GITHUB_WORKSPACE/
     status:
-      - bash $GITHUB_ACTION_PATH/scripts/evaluate.sh $UCI_TERRAFORM_TRIVY_CHECKS
+      - '[[ $UCI_TERRAFORM_TRIVY_CHECKS != "true" ]]'
 
   default:
     ignore_error: true
