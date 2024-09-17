@@ -15,6 +15,8 @@ includes:
     taskfile: ./tasks/python.yml
   terraform_tasks:
     taskfile: ./tasks/terraform.yml
+  generate_summary:
+    taskfile: ./tasks/summary.yml
 
 output:
   group:
@@ -22,36 +24,38 @@ output:
     end: '::endgroup::'
 
 tasks:
-  print_config:
-    label: UCI CONFIG
-    name: Prints the merged UCI configuration
-    run: once
-    cmds:
-      - |
-        printf '## Runtime Configuration\n' >> $GITHUB_STEP_SUMMARY
-        printf '```yaml \n' >> $GITHUB_STEP_SUMMARY
-        bash $GITHUB_ACTION_PATH/scripts/print_configuration.sh | tee -a $GITHUB_STEP_SUMMARY
-        printf '```\n' >> $GITHUB_STEP_SUMMARY
-
   python_checks:
     name: Run python checks
+    run: once
     deps:
       - print_config
       - python_tasks:default
     status:
-      - 'if [[ "$PYTHON_CHECKS" == "true" ]]; then exit 1; fi'
+      - 'if [[ "$UCI_PYTHON_CHECKS" == "true" ]]; then exit 1; fi'
 
   terraform_checks:
     name: Run terraform checks
+    run: once
     deps:
       - print_config
       - terraform_tasks:default
     status:
-      - 'if [[ "$TERRAFORM_CHECKS" == "true" ]]; then exit 1; fi'
+      - 'if [[ "$UCI_TERRAFORM_CHECKS" == "true" ]]; then exit 1; fi'
 
-  default:
+  run_checks:
+    run: once
     ignore_error: true
     deps:
-      - print_config
       - python_checks
       - terraform_checks
+
+  generate_summary:
+    run: once
+    deps:
+      - run_checks
+      - generate_summary:default
+
+  default:
+    run: once
+    deps:
+      - generate_summary

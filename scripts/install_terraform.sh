@@ -51,14 +51,14 @@ download_zip="${download_path}/terraform.zip"
 download_executable="${download_path}/terraform"
 
 # Determine Terraform version to install
-if [ -z "${TERRAFORM_VERSION}" ] || [ "${TERRAFORM_VERSION}" == "latest" ]; then
+if [ -z "${UCI_TERRAFORM_VERSION}" ] || [ "${UCI_TERRAFORM_VERSION}" == "latest" ]; then
   echo "Looking up the latest version of Terraform ..."
   if [ -n "${GITHUB_TOKEN}" ]; then
     echo "Requesting with GITHUB_TOKEN ..."
   fi
   version=$(get_latest_release)
 else
-  version=${TERRAFORM_VERSION}
+  version=${UCI_TERRAFORM_VERSION}
 fi
 
 # Remove the 'v' prefix if present

@@ -24,15 +24,9 @@ output:
     end: '::endgroup::'
 
 tasks:
-  summary_header:
-    name: Execute python checks
-    run: once
-    cmds:
-      - printf '## Python\n' >> $GITHUB_STEP_SUMMARY
   # Installations
   upgrade_pip:
     name: Upgrade pip
-    deps: [summary_header]
     run: once
     internal: true
     cmds:
@@ -45,7 +39,7 @@ tasks:
     cmds:
       - pip install --user --upgrade pylint
     status:
-      - 'if [[ "$PYTHON_PYLINT_CHECKS" == "true" ]]; then exit 1; fi'
+      - 'if [[ "$UCI_PYTHON_PYLINT_CHECKS" == "true" ]]; then exit 1; fi'
   install_bandit:
     name: Install bandit
     run: once
@@ -54,33 +48,28 @@ tasks:
     cmds:
       - pip install --user --upgrade bandit
     status:
-      - 'if [[ "$PYTHON_BANDIT_CHECKS" == "true" ]]; then exit 1; fi'
+      - 'if [[ "$UCI_PYTHON_BANDIT_CHECKS" == "true" ]]; then exit 1; fi'
 
   # Checks
   run_pylint:
     name: Run pylint
+    run: once
     deps: [install_pylint]
     cmds:
-      - |
-        printf '### Pylint\n' >> $GITHUB_STEP_SUMMARY
-        printf '```shell \n' >> $GITHUB_STEP_SUMMARY
-        pylint --rcfile {{.PYLINT_CONFIG}} --recursive=y $GITHUB_WORKSPACE | tee -a $GITHUB_STEP_SUMMARY
-        printf '```\n' >> $GITHUB_STEP_SUMMARY
+      - pylint --rcfile {{.PYLINT_CONFIG}} --recursive=y $GITHUB_WORKSPACE
     status:
-      - 'if [[ "$PYTHON_PYLINT_CHECKS" == "true" ]]; then exit 1; fi'
+      - 'if [[ "$UCI_PYTHON_PYLINT_CHECKS" == "true" ]]; then exit 1; fi'
   run_bandit:
     name: Run bandit
+    run: once
     deps: [install_bandit]
     cmds:
-      - |
-        printf '### Bandit\n' >> $GITHUB_STEP_SUMMARY
-        printf '```shell \n' >> $GITHUB_STEP_SUMMARY
-        bandit -c {{.BANDIT_CONFIG}} -r $GITHUB_WORKSPACE | tee -a $GITHUB_STEP_SUMMARY
-        printf '```\n' >> $GITHUB_STEP_SUMMARY
+      - bandit -c {{.BANDIT_CONFIG}} -r $GITHUB_WORKSPACE
     status:
-      - 'if [[ "$PYTHON_BANDIT_CHECKS" == "true" ]]; then exit 1; fi'
+      - 'if [[ "$UCI_PYTHON_BANDIT_CHECKS" == "true" ]]; then exit 1; fi'
 
   default:
+    run: once
     deps:
       - run_pylint
       - run_bandit

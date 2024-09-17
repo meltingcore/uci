@@ -1,0 +1,13 @@
+version: '3'
+
+silent: true
+
+output:
+  group:
+    begin: '::group::{{.TASK}}'
+    end: '::endgroup::'
+
+tasks:
+  default:
+    deps:
+      - echo "Generate Summary for GitHub Actions (placeholder)"

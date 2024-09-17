@@ -24,24 +24,17 @@ output:
     end: '::endgroup::'
 
 tasks:
-  summary_header:
-    name: Execute terraform checks
-    run: once
-    cmds:
-      - printf '## Terraform\n' >> $GITHUB_STEP_SUMMARY
   # Installations
   install_terraform:
     name: Install Terraform
-    deps: [summary_header]
     run: once
     internal: true
     cmds:
       - bash $GITHUB_ACTION_PATH/scripts/install_terraform.sh
     status:
-      - 'if [[ "$TERRAFORM_FMT_CHECKS" == "true" ]]; then exit 1; fi'
+      - 'if [[ "$UCI_TERRAFORM_FMT_CHECKS" == "true" ]]; then exit 1; fi'
   install_tflint:
     name: Install TFLint
-    deps: [summary_header]
     run: once
     internal: true
     cmds:
@@ -49,51 +42,41 @@ tasks:
         curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
         tflint --config {{.TFLINT_CONFIG}} --init
     status:
-      - 'if [[ "$TERRAFORM_TFLINT_CHECKS" == "true" ]]; then exit 1; fi'
+      - 'if [[ "$UCI_TERRAFORM_TFLINT_CHECKS" == "true" ]]; then exit 1; fi'
   install_trivy:
     name: Install trivy
-    deps: [summary_header]
     run: once
     internal: true
     cmds:
-      - curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sudo sh -s -- -b /usr/local/bin v0.55.1
+      - curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sudo sh -s -- -b /usr/local/bin $UCI_TERRAFORM_TRIVY_VERSION
     status:
-      - 'if [[ "$TERRAFORM_TRIVY_CHECKS" == "true" ]]; then exit 1; fi'
+      - 'if [[ "$UCI_TERRAFORM_TRIVY_CHECKS" == "true" ]]; then exit 1; fi'
 
   # Checks
   run_terraform_fmt:
     name: Run terraform fmt
+    run: once
     deps: [install_terraform]
     cmds:
-      - |
-        printf '### Terraform fmt\n' >> $GITHUB_STEP_SUMMARY
-        printf '```shell \n' >> $GITHUB_STEP_SUMMARY
-        terraform fmt -recursive $GITHUB_WORKSPACE | tee -a $GITHUB_STEP_SUMMARY
-        printf '```\n' >> $GITHUB_STEP_SUMMARY
+      - terraform fmt -recursive $GITHUB_WORKSPACE
     status:
-      - 'if [[ "$TERRAFORM_FMT_CHECKS" == "true" ]]; then exit 1; fi'
+      - 'if [[ "$UCI_TERRAFORM_FMT_CHECKS" == "true" ]]; then exit 1; fi'
   run_tflint:
     name: Run TFLint
+    run: once
     deps: [install_tflint]
     cmds:
-      - |
-        printf '### TFLint\n' >> $GITHUB_STEP_SUMMARY
-        printf '```shell \n' >> $GITHUB_STEP_SUMMARY
-        tflint --config {{.TFLINT_CONFIG}} --recursive $GITHUB_WORKSPACE | tee -a $GITHUB_STEP_SUMMARY
-        printf '```\n' >> $GITHUB_STEP_SUMMARY
+      - tflint --config {{.TFLINT_CONFIG}} --recursive $GITHUB_WORKSPACE
     status:
-      - 'if [[ "$TERRAFORM_TFLINT_CHECKS" == "true" ]]; then exit 1; fi'
+      - 'if [[ "$UCI_TERRAFORM_TFLINT_CHECKS" == "true" ]]; then exit 1; fi'
   run_trivy:
     name: Run Trivy
+    run: once
     deps: [install_trivy]
     cmds:
-      - |
-        printf '### Trivy\n' >> $GITHUB_STEP_SUMMARY
-        printf '```shell \n' >> $GITHUB_STEP_SUMMARY
-        trivy config -c {{.TRIVY_CONFIG}} $GITHUB_WORKSPACE/ | tee -a $GITHUB_STEP_SUMMARY
-        printf '```\n' >> $GITHUB_STEP_SUMMARY
+      - trivy config -c {{.TRIVY_CONFIG}} $GITHUB_WORKSPACE/ | tee -a $GITHUB_STEP_SUMMARY
     status:
-      - 'if [[ "$TERRAFORM_TRIVY_CHECKS" == "true" ]]; then exit 1; fi'
+      - 'if [[ "$UCI_TERRAFORM_TRIVY_CHECKS" == "true" ]]; then exit 1; fi'
 
   default:
     deps:
