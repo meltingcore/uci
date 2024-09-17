@@ -30,6 +30,11 @@ tasks:
       - |
         echo "Python checks: $PYTHON_CHECKS"
         echo "Terraform checks: $TERRAFORM_CHECKS"
+        if [[ "$TERRAFORM_CHECKS" == "true" ]]; then
+          echo "true - do the checks"
+        else
+          echo "false - dont do the checks"
+        fi
 
   python_checks:
     name: Run python checks
