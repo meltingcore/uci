@@ -28,7 +28,6 @@ tasks:
     name: Run python checks
     run: once
     deps:
-      - print_config
       - python_tasks:default
     status:
       - 'if [[ "$UCI_PYTHON_CHECKS" == "true" ]]; then exit 1; fi'
@@ -37,7 +36,6 @@ tasks:
     name: Run terraform checks
     run: once
     deps:
-      - print_config
       - terraform_tasks:default
     status:
       - 'if [[ "$UCI_TERRAFORM_CHECKS" == "true" ]]; then exit 1; fi'
