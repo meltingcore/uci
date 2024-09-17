@@ -15,7 +15,7 @@ tasks:
       - |
         printf '## UCI Configuration \n' >> $GITHUB_STEP_SUMMARY
         printf '```dotenv \n' >> $GITHUB_STEP_SUMMARY
-        env | grep ^UCI_ | sort -u | tee -a $GITHUB_STEP_SUMMARY
+        env | grep ^UCI_ | tee -a $GITHUB_STEP_SUMMARY
         printf '``` \n' >> $GITHUB_STEP_SUMMARY
 
   default:
