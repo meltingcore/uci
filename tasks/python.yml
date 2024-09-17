@@ -24,9 +24,15 @@ output:
     end: '::endgroup::'
 
 tasks:
+  summary_header:
+    name: Execute python checks
+    run: once
+    cmds:
+      - printf '## Python\n' >> $GITHUB_STEP_SUMMARY
   # Installations
   upgrade_pip:
     name: Upgrade pip
+    deps: [summary_header]
     run: once
     internal: true
     cmds:
@@ -56,8 +62,10 @@ tasks:
     deps: [install_pylint]
     cmds:
       - |
-        echo "### pylint checks" >> $GITHUB_STEP_SUMMARY
+        printf '### Pylint\n' >> $GITHUB_STEP_SUMMARY
+        printf '```shell \n' >> $GITHUB_STEP_SUMMARY
         pylint --rcfile {{.PYLINT_CONFIG}} --recursive=y $GITHUB_WORKSPACE | tee -a $GITHUB_STEP_SUMMARY
+        printf '```\n' >> $GITHUB_STEP_SUMMARY
     status:
       - 'if [[ "$PYTHON_PYLINT_CHECKS" == "true" ]]; then exit 1; fi'
   run_bandit:
@@ -65,8 +73,10 @@ tasks:
     deps: [install_bandit]
     cmds:
       - |
-        echo "### bandit checks" >> $GITHUB_STEP_SUMMARY
+        printf '### Bandit\n' >> $GITHUB_STEP_SUMMARY
+        printf '```shell \n' >> $GITHUB_STEP_SUMMARY
         bandit -c {{.BANDIT_CONFIG}} -r $GITHUB_WORKSPACE | tee -a $GITHUB_STEP_SUMMARY
+        printf '```\n' >> $GITHUB_STEP_SUMMARY
     status:
       - 'if [[ "$PYTHON_BANDIT_CHECKS" == "true" ]]; then exit 1; fi'
 

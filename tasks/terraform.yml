@@ -24,9 +24,15 @@ output:
     end: '::endgroup::'
 
 tasks:
+  summary_header:
+    name: Execute terraform checks
+    run: once
+    cmds:
+      - printf '## Terraform\n' >> $GITHUB_STEP_SUMMARY
   # Installations
   install_terraform:
     name: Install Terraform
+    deps: [summary_header]
     run: once
     internal: true
     cmds:
@@ -35,6 +41,7 @@ tasks:
       - 'if [[ "$TERRAFORM_FMT_CHECKS" == "true" ]]; then exit 1; fi'
   install_tflint:
     name: Install TFLint
+    deps: [summary_header]
     run: once
     internal: true
     cmds:
@@ -45,6 +52,7 @@ tasks:
       - 'if [[ "$TERRAFORM_TFLINT_CHECKS" == "true" ]]; then exit 1; fi'
   install_trivy:
     name: Install trivy
+    deps: [summary_header]
     run: once
     internal: true
     cmds:
@@ -58,8 +66,10 @@ tasks:
     deps: [install_terraform]
     cmds:
       - |
-        echo "### terraform fmt checks" >> $GITHUB_STEP_SUMMARY
+        printf '### Terraform fmt\n' >> $GITHUB_STEP_SUMMARY
+        printf '```shell \n' >> $GITHUB_STEP_SUMMARY
         terraform fmt -recursive $GITHUB_WORKSPACE | tee -a $GITHUB_STEP_SUMMARY
+        printf '```\n' >> $GITHUB_STEP_SUMMARY
     status:
       - 'if [[ "$TERRAFORM_FMT_CHECKS" == "true" ]]; then exit 1; fi'
   run_tflint:
@@ -67,8 +77,10 @@ tasks:
     deps: [install_tflint]
     cmds:
       - |
-        echo "### tflint checks" >> $GITHUB_STEP_SUMMARY
+        printf '### TFLint\n' >> $GITHUB_STEP_SUMMARY
+        printf '```shell \n' >> $GITHUB_STEP_SUMMARY
         tflint --config {{.TFLINT_CONFIG}} --recursive $GITHUB_WORKSPACE | tee -a $GITHUB_STEP_SUMMARY
+        printf '```\n' >> $GITHUB_STEP_SUMMARY
     status:
       - 'if [[ "$TERRAFORM_TFLINT_CHECKS" == "true" ]]; then exit 1; fi'
   run_trivy:
@@ -76,8 +88,10 @@ tasks:
     deps: [install_trivy]
     cmds:
       - |
-        echo "### trivy checks" >> $GITHUB_STEP_SUMMARY
+        printf '### Trivy\n' >> $GITHUB_STEP_SUMMARY
+        printf '```shell \n' >> $GITHUB_STEP_SUMMARY
         trivy config -c {{.TRIVY_CONFIG}} $GITHUB_WORKSPACE/ | tee -a $GITHUB_STEP_SUMMARY
+        printf '```\n' >> $GITHUB_STEP_SUMMARY
     status:
       - 'if [[ "$TERRAFORM_TRIVY_CHECKS" == "true" ]]; then exit 1; fi'
 

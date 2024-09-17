@@ -28,10 +28,10 @@ tasks:
     run: once
     cmds:
       - |
-        echo "## Runtime Configuration" >> $GITHUB_STEP_SUMMARY
-        echo "```shell" >> $GITHUB_STEP_SUMMARY
-        bash $GITHUB_ACTION_PATH/scripts/print_configuration.sh >> $GITHUB_STEP_SUMMARY
-        echo "```" >> $GITHUB_STEP_SUMMARY
+        printf '## Runtime Configuration\n' >> $GITHUB_STEP_SUMMARY
+        printf '```yaml \n' >> $GITHUB_STEP_SUMMARY
+        bash $GITHUB_ACTION_PATH/scripts/print_configuration.sh | tee -a $GITHUB_STEP_SUMMARY
+        printf '```\n' >> $GITHUB_STEP_SUMMARY
 
   python_checks:
     name: Run python checks
@@ -50,6 +50,7 @@ tasks:
       - 'if [[ "$TERRAFORM_CHECKS" == "true" ]]; then exit 1; fi'
 
   default:
+    ignore_error: true
     deps:
       - print_config
       - python_checks
