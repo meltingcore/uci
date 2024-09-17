@@ -44,6 +44,8 @@ tasks:
   run_checks:
     ignore_error: true
     run: once
+    cmds:
+      - env | grep ^UCI_
     deps:
       - python_checks
       - terraform_checks
