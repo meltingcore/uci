@@ -66,7 +66,7 @@ tasks:
     run: once
     deps: [install_tflint]
     cmds:
-      - tflint --config {{.TFLINT_CONFIG}} --recursive $GITHUB_WORKSPACE
+      - tflint --config {{.TFLINT_CONFIG}} --recursive
     status:
       - 'if [[ "$UCI_TERRAFORM_TFLINT_CHECKS" == "true" ]]; then exit 1; fi'
   run_trivy:

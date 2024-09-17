@@ -15,7 +15,7 @@ includes:
     taskfile: ./tasks/python.yml
   terraform_tasks:
     taskfile: ./tasks/terraform.yml
-  generate_summary:
+  summary_tasks:
     taskfile: ./tasks/summary.yml
 
 output:
@@ -51,7 +51,7 @@ tasks:
     run: once
     deps:
       - run_checks
-      - generate_summary:default
+      - summary_tasks:default
 
   default:
     run: once
