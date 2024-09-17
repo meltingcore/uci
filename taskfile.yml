@@ -22,25 +22,17 @@ output:
     end: '::endgroup::'
 
 tasks:
-  print_env:
-    name: Print environment variables
+  print_config:
+    label: UCI CONFIG
+    name: Prints the merged UCI configuration
     run: once
     cmds:
-      - env
-  # Print the related configuration
-  main_config:
-    label: MAIN CONFIG
-    name: Prints technology related configuration
-    run: once
-    cmds:
-      - |
-        echo "Python checks: $PYTHON_CHECKS"
-        echo "Terraform checks: $TERRAFORM_CHECKS"
+      - bash $GITHUB_ACTION_PATH/scripts/print_configuration.sh
 
   python_checks:
     name: Run python checks
     deps:
-      - main_config
+      - print_config
       - python_tasks:default
     status:
       - 'if [[ "$PYTHON_CHECKS" == "true" ]]; then exit 1; fi'
@@ -48,14 +40,13 @@ tasks:
   terraform_checks:
     name: Run terraform checks
     deps:
-      - main_config
+      - print_config
       - terraform_tasks:default
     status:
       - 'if [[ "$TERRAFORM_CHECKS" == "true" ]]; then exit 1; fi'
 
   default:
     deps:
-      - print_env
-      - main_config
+      - print_config
       - python_checks
       - terraform_checks

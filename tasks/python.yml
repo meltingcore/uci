@@ -24,21 +24,10 @@ output:
     end: '::endgroup::'
 
 tasks:
-  # Print the related configuration
-  python_config:
-    label: PYTHON CONFIG
-    name: Prints python related configuration
-    run: once
-    cmds:
-      - |
-        echo "pylint checks: $PYTHON_PYLINT_CHECKS"
-        echo "bandit checks: $PYTHON_BANDIT_CHECKS"
-
   # Installations
   upgrade_pip:
     name: Upgrade pip
     run: once
-    deps: [python_config]
     internal: true
     cmds:
       - python3 -m pip install --user --upgrade pip
@@ -79,6 +68,5 @@ tasks:
 
   default:
     deps:
-      - python_config
       - run_pylint
       - run_bandit
