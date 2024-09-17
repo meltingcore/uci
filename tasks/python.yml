@@ -28,6 +28,7 @@ tasks:
   python_config:
     label: PYTHON CONFIG
     name: Prints python related configuration
+    run: once
     cmds:
       - |
         echo "pylint checks: $PYTHON_PYLINT_CHECKS"
@@ -36,26 +37,29 @@ tasks:
   # Installations
   upgrade_pip:
     name: Upgrade pip
+    run: once
     deps: [python_config]
     internal: true
     cmds:
       - python3 -m pip install --user --upgrade pip
   install_pylint:
     name: Install pylint
+    run: once
     deps: [upgrade_pip]
     internal: true
     cmds:
       - pip install --user --upgrade pylint
-    preconditions:
-      - sh: '[[ "$PYTHON_PYLINT_CHECKS" == "true" ]]'
+    status:
+      - 'if [[ "$PYTHON_PYLINT_CHECKS" == "true" ]]; then exit 1; fi'
   install_bandit:
     name: Install bandit
+    run: once
     deps: [upgrade_pip]
     internal: true
     cmds:
       - pip install --user --upgrade bandit
-    preconditions:
-      - sh: '[[ "$PYTHON_BANDIT_CHECKS" == "true" ]]'
+    status:
+      - 'if [[ "$PYTHON_BANDIT_CHECKS" == "true" ]]; then exit 1; fi'
 
   # Checks
   run_pylint:
@@ -63,15 +67,15 @@ tasks:
     deps: [install_pylint]
     cmds:
       - pylint --rcfile {{.PYLINT_CONFIG}} --recursive=y $GITHUB_WORKSPACE
-    preconditions:
-      - sh: '[[ "$PYTHON_PYLINT_CHECKS" == "true" ]]'
+    status:
+      - 'if [[ "$PYTHON_PYLINT_CHECKS" == "true" ]]; then exit 1; fi'
   run_bandit:
     name: Run bandit
     deps: [install_bandit]
     cmds:
       - bandit -c {{.BANDIT_CONFIG}} -r $GITHUB_WORKSPACE
-    preconditions:
-      - sh: '[[ "$PYTHON_BANDIT_CHECKS" == "true" ]]'
+    status:
+      - 'if [[ "$PYTHON_BANDIT_CHECKS" == "true" ]]; then exit 1; fi'
 
   default:
     deps:

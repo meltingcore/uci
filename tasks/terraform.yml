@@ -28,6 +28,7 @@ tasks:
   terraform_config:
     label: TERRAFORM CONFIG
     name: Prints terraform related configuration
+    run: once
     cmds:
       - |
         echo "Terraform fmt checks: $TERRAFORM_FMT_CHECKS"
@@ -37,30 +38,33 @@ tasks:
   # Installations
   install_terraform:
     name: Install Terraform
+    run: once
     deps: [terraform_config]
     internal: true
     cmds:
       - bash $GITHUB_ACTION_PATH/scripts/install_terraform.sh
-    preconditions:
-      - sh: '[[ "$TERRAFORM_FMT_CHECKS" == "true" ]]'
+    status:
+      - 'if [[ "$TERRAFORM_FMT_CHECKS" == "true" ]]; then exit 1; fi'
   install_tflint:
     name: Install TFLint
+    run: once
     deps: [terraform_config]
     internal: true
     cmds:
       - |
         curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
         tflint --config {{.TFLINT_CONFIG}} --init
-    preconditions:
-      - sh: '[[ "$TERRAFORM_TFLINT_CHECKS" == "true" ]]'
+    status:
+      - 'if [[ "$TERRAFORM_TFLINT_CHECKS" == "true" ]]; then exit 1; fi'
   install_trivy:
     name: Install trivy
+    run: once
     deps: [terraform_config]
     internal: true
     cmds:
       - curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sudo sh -s -- -b /usr/local/bin v0.55.1
-    preconditions:
-      - sh: '[[ "$TERRAFORM_TRIVY_CHECKS" == "true" ]]'
+    status:
+      - 'if [[ "$TERRAFORM_TRIVY_CHECKS" == "true" ]]; then exit 1; fi'
 
   # Checks
   run_terraform_fmt:
@@ -68,22 +72,22 @@ tasks:
     deps: [install_terraform]
     cmds:
       - terraform fmt -recursive $GITHUB_WORKSPACE
-    preconditions:
-      - sh: '[[ "$TERRAFORM_FMT_CHECKS" == "true" ]]'
+    status:
+      - 'if [[ "$TERRAFORM_FMT_CHECKS" == "true" ]]; then exit 1; fi'
   run_tflint:
     name: Run TFLint
     deps: [install_tflint]
     cmds:
       - tflint --config {{.TFLINT_CONFIG}} --recursive
-    preconditions:
-      - sh: '[[ "$TERRAFORM_TFLINT_CHECKS" == "true" ]]'
+    status:
+      - 'if [[ "$TERRAFORM_TFLINT_CHECKS" == "true" ]]; then exit 1; fi'
   run_trivy:
     name: Run Trivy
     deps: [install_trivy]
     cmds:
       - trivy config -c {{.TRIVY_CONFIG}} $GITHUB_WORKSPACE/
-    preconditions:
-      - sh: '[[ "$TERRAFORM_TRIVY_CHECKS" == "true" ]]'
+    status:
+      - 'if [[ "$TERRAFORM_TRIVY_CHECKS" == "true" ]]; then exit 1; fi'
 
   default:
     deps:

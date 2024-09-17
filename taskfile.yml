@@ -26,31 +26,27 @@ tasks:
   main_config:
     label: MAIN CONFIG
     name: Prints technology related configuration
+    run: once
     cmds:
       - |
         echo "Python checks: $PYTHON_CHECKS"
         echo "Terraform checks: $TERRAFORM_CHECKS"
-        if [[ "$TERRAFORM_CHECKS" == "true" ]]; then
-          echo "true - do the checks"
-        else
-          echo "false - dont do the checks"
-        fi
 
   python_checks:
     name: Run python checks
     deps:
       - main_config
       - python_tasks:default
-    preconditions:
-      - sh: '[[ "$PYTHON_CHECKS" == "true" ]]'
+    status:
+      - 'if [[ "$PYTHON_CHECKS" == "true" ]]; then exit 1; fi'
 
   terraform_checks:
     name: Run terraform checks
     deps:
       - main_config
       - terraform_tasks:default
-    preconditions:
-      - sh: '[[ "$TERRAFORM_CHECKS" == "true" ]]'
+    status:
+      - 'if [[ "$TERRAFORM_CHECKS" == "true" ]]; then exit 1; fi'
 
   default:
     deps:
