@@ -27,7 +27,6 @@ output:
 tasks:
   python_checks:
     name: Run python checks
-    ignore_error: true
     run: once
     deps:
       - python_tasks:default
@@ -36,7 +35,6 @@ tasks:
 
   terraform_checks:
     name: Run terraform checks
-    ignore_error: true
     run: once
     deps:
       - terraform_tasks:default
