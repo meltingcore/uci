@@ -48,7 +48,6 @@ tasks:
       - sh: '[[ "$TERRAFORM_CHECKS" == "true" ]]'
 
   default:
-    ignore_error: true
     deps:
       - main_config
       - python_checks
