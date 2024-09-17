@@ -47,7 +47,7 @@ tasks:
       - python_checks
       - terraform_checks
 
-  default:
+  generate_summary:
     run: once
     ignore_error: true
     cmds:
@@ -55,4 +55,8 @@ tasks:
       - bash $GITHUB_ACTION_PATH/scripts/evaluate.sh $UCI_TERRAFORM_CHECKS; echo $?
     deps:
       - run_checks
-      - summary_tasks:default
+
+  default:
+    ignore_error: true
+    deps:
+      - generate_summary
