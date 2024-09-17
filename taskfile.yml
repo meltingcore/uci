@@ -47,13 +47,8 @@ tasks:
       - python_checks
       - terraform_checks
 
-  generate_summary:
+  default:
     run: once
     deps:
       - run_checks
       - summary_tasks:default
-
-  default:
-    run: once
-    deps:
-      - generate_summary
