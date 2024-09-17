@@ -22,6 +22,12 @@ output:
     end: '::endgroup::'
 
 tasks:
+  check_env:
+    name: Check environment
+    cmds:
+      - cat {{.CLIENT}}/uci.env
+      - cat {{.ACTION}}/uci.env
+      - echo $TERRAFORM_CHECKS
   python_checks:
     name: Run python checks
     ignore_error: true
@@ -38,5 +44,6 @@ tasks:
       - sh: '[[ "$TERRAFORM_CHECKS" == "true" ]]'
   default:
     deps:
+      - check_env
       - python_checks
       - terraform_checks
