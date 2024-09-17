@@ -28,24 +28,22 @@ tasks:
   python_checks:
     name: Run python checks
     run: once
-    deps:
-      - python_tasks:default
+    cmds:
+      - task: python_tasks:default
     status:
       - '[[ $UCI_PYTHON_CHECKS != "true" ]]'
 
   terraform_checks:
     name: Run terraform checks
     run: once
-    deps:
-      - terraform_tasks:default
+    cmds:
+      - task: terraform_tasks:default
     status:
       - '[[ $UCI_TERRAFORM_CHECKS != "true" ]]'
 
   run_checks:
     ignore_error: true
     run: once
-    cmds:
-      - env | grep ^UCI_
     deps:
       - python_checks
       - terraform_checks
@@ -55,9 +53,9 @@ tasks:
     run: once
     deps:
       - run_checks
-      - summary_tasks:default
+    cmds:
+      - task: summary_tasks:default
 
   default:
-    ignore_error: true
     deps:
       - generate_summary
