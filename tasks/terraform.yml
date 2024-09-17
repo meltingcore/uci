@@ -57,21 +57,27 @@ tasks:
     name: Run terraform fmt
     deps: [install_terraform]
     cmds:
-      - terraform fmt -recursive $GITHUB_WORKSPACE
+      - |
+        echo "### terraform fmt checks" >> $GITHUB_STEP_SUMMARY
+        terraform fmt -recursive $GITHUB_WORKSPACE | tee -a $GITHUB_STEP_SUMMARY
     status:
       - 'if [[ "$TERRAFORM_FMT_CHECKS" == "true" ]]; then exit 1; fi'
   run_tflint:
     name: Run TFLint
     deps: [install_tflint]
     cmds:
-      - tflint --config {{.TFLINT_CONFIG}} --recursive
+      - |
+        echo "### tflint checks" >> $GITHUB_STEP_SUMMARY
+        tflint --config {{.TFLINT_CONFIG}} --recursive $GITHUB_WORKSPACE | tee -a $GITHUB_STEP_SUMMARY
     status:
       - 'if [[ "$TERRAFORM_TFLINT_CHECKS" == "true" ]]; then exit 1; fi'
   run_trivy:
     name: Run Trivy
     deps: [install_trivy]
     cmds:
-      - trivy config -c {{.TRIVY_CONFIG}} $GITHUB_WORKSPACE/
+      - |
+        echo "### trivy checks" >> $GITHUB_STEP_SUMMARY
+        trivy config -c {{.TRIVY_CONFIG}} $GITHUB_WORKSPACE/ | tee -a $GITHUB_STEP_SUMMARY
     status:
       - 'if [[ "$TERRAFORM_TRIVY_CHECKS" == "true" ]]; then exit 1; fi'
 

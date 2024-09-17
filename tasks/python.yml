@@ -55,14 +55,18 @@ tasks:
     name: Run pylint
     deps: [install_pylint]
     cmds:
-      - pylint --rcfile {{.PYLINT_CONFIG}} --recursive=y $GITHUB_WORKSPACE
+      - |
+        echo "### pylint checks" >> $GITHUB_STEP_SUMMARY
+        pylint --rcfile {{.PYLINT_CONFIG}} --recursive=y $GITHUB_WORKSPACE | tee -a $GITHUB_STEP_SUMMARY
     status:
       - 'if [[ "$PYTHON_PYLINT_CHECKS" == "true" ]]; then exit 1; fi'
   run_bandit:
     name: Run bandit
     deps: [install_bandit]
     cmds:
-      - bandit -c {{.BANDIT_CONFIG}} -r $GITHUB_WORKSPACE
+      - |
+        echo "### bandit checks" >> $GITHUB_STEP_SUMMARY
+        bandit -c {{.BANDIT_CONFIG}} -r $GITHUB_WORKSPACE | tee -a $GITHUB_STEP_SUMMARY
     status:
       - 'if [[ "$PYTHON_BANDIT_CHECKS" == "true" ]]; then exit 1; fi'
 
