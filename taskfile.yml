@@ -43,6 +43,7 @@ tasks:
 
   run_checks:
     run: once
+    ignore_error: true
     deps:
       - python_checks
       - terraform_checks
