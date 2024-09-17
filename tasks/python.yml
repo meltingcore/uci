@@ -27,12 +27,14 @@ tasks:
   # Installations
   upgrade_pip:
     name: Upgrade pip
+    ignore_error: true
     run: once
     internal: true
     cmds:
       - python3 -m pip install --user --upgrade pip
   install_pylint:
     name: Install pylint
+    ignore_error: true
     run: once
     deps: [upgrade_pip]
     internal: true
@@ -42,6 +44,7 @@ tasks:
       - bash $GITHUB_ACTION_PATH/scripts/evaluate.sh $UCI_PYTHON_PYLINT_CHECKS
   install_bandit:
     name: Install bandit
+    ignore_error: true
     run: once
     deps: [upgrade_pip]
     internal: true
@@ -53,6 +56,7 @@ tasks:
   # Checks
   run_pylint:
     name: Run pylint
+    ignore_error: true
     run: once
     deps: [install_pylint]
     cmds:
@@ -61,6 +65,7 @@ tasks:
       - bash $GITHUB_ACTION_PATH/scripts/evaluate.sh $UCI_PYTHON_PYLINT_CHECKS
   run_bandit:
     name: Run bandit
+    ignore_error: true
     run: once
     deps: [install_bandit]
     cmds:
@@ -69,6 +74,7 @@ tasks:
       - bash $GITHUB_ACTION_PATH/scripts/evaluate.sh $UCI_PYTHON_BANDIT_CHECKS
 
   default:
+    ignore_error: true
     run: once
     deps:
       - run_pylint

@@ -44,15 +44,15 @@ tasks:
       - bash $GITHUB_ACTION_PATH/scripts/evaluate.sh $UCI_TERRAFORM_CHECKS
 
   run_checks:
-    run: once
     ignore_error: true
+    run: once
     deps:
       - python_checks
       - terraform_checks
 
   generate_summary:
-    run: once
     ignore_error: true
+    run: once
     cmds:
       - bash $GITHUB_ACTION_PATH/scripts/evaluate.sh $UCI_PYTHON_CHECKS; echo $?
       - bash $GITHUB_ACTION_PATH/scripts/evaluate.sh $UCI_TERRAFORM_CHECKS; echo $?
