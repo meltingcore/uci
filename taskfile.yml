@@ -22,6 +22,11 @@ output:
     end: '::endgroup::'
 
 tasks:
+  print_env:
+    name: Print environment variables
+    run: once
+    cmds:
+      - env
   # Print the related configuration
   main_config:
     label: MAIN CONFIG
@@ -50,6 +55,7 @@ tasks:
 
   default:
     deps:
+      - print_env
       - main_config
       - python_checks
       - terraform_checks
