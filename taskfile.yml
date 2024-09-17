@@ -50,6 +50,9 @@ tasks:
   default:
     run: once
     ignore_error: true
+    cmds:
+      - bash $GITHUB_ACTION_PATH/scripts/evaluate.sh $UCI_PYTHON_CHECKS; echo $?
+      - bash $GITHUB_ACTION_PATH/scripts/evaluate.sh $UCI_TERRAFORM_CHECKS; echo $?
     deps:
       - run_checks
       - summary_tasks:default
