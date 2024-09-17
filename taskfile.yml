@@ -54,8 +54,8 @@ tasks:
     ignore_error: true
     run: once
     cmds:
-      - bash $GITHUB_ACTION_PATH/scripts/evaluate.sh $UCI_PYTHON_CHECKS; echo $?
-      - bash $GITHUB_ACTION_PATH/scripts/evaluate.sh $UCI_TERRAFORM_CHECKS; echo $?
+      - echo "python" && bash $GITHUB_ACTION_PATH/scripts/evaluate.sh $UCI_PYTHON_CHECKS; echo $?; echo -e "\n"
+      - echo "tf" && bash $GITHUB_ACTION_PATH/scripts/evaluate.sh $UCI_TERRAFORM_CHECKS; echo $?; echo -e "\n"
     deps:
       - run_checks
 
