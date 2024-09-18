@@ -13,11 +13,7 @@ runs:
     # Run all CI checks via taskfile
     - name: Run CI checks
       shell: bash
-      run: |
-            task --taskfile $GITHUB_ACTION_PATH/taskfile.yml \
-            --dir $GITHUB_WORKSPACE --parallel \
-            python-checks \
-            terraform-checks
+      run: task -t $GITHUB_ACTION_PATH/taskfile.yml -d $GITHUB_WORKSPACE run-all-checks
 
     # Generate markdown summary
     - name: Generate Summary
