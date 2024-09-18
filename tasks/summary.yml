@@ -8,7 +8,7 @@ output:
     end: '::endgroup::'
 
 tasks:
-  generate_config:
+  generate-config:
     name: Print the runtime UCI configuration
     run: once
     cmds:
@@ -20,7 +20,7 @@ tasks:
 
   default:
     deps:
-      - generate_config
+      - generate-config
     run: once
     cmds:
       - echo "Generate Summary for GitHub Actions (placeholder)"

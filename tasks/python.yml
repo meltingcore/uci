@@ -25,27 +25,27 @@ output:
 
 tasks:
   # Installations
-  upgrade_pip:
+  upgrade-pip:
     name: Upgrade pip
     run: once
     internal: true
     cmds:
       - python3 -m pip install --user --upgrade pip
 
-  install_pylint:
+  install-pylint:
     name: Install pylint
     run: once
-    deps: [upgrade_pip]
+    deps: [upgrade-pip]
     internal: true
     cmds:
       - pip install --user --upgrade pylint
     status:
       - '[[ $UCI_PYTHON_PYLINT_CHECKS != "true" ]]'
 
-  install_bandit:
+  install-bandit:
     name: Install bandit
     run: once
-    deps: [upgrade_pip]
+    deps: [upgrade-pip]
     internal: true
     cmds:
       - pip install --user --upgrade bandit
@@ -53,19 +53,19 @@ tasks:
       - '[[ $UCI_PYTHON_BANDIT_CHECKS != "true" ]]'
 
   # Checks
-  run_pylint:
+  run-pylint:
     name: Run pylint
     run: once
-    deps: [install_pylint]
+    deps: [install-pylint]
     cmds:
       - pylint --rcfile {{.PYLINT_CONFIG}} --recursive=y $GITHUB_WORKSPACE
     status:
       - '[[ $UCI_PYTHON_PYLINT_CHECKS != "true" ]]'
 
-  run_bandit:
+  run-bandit:
     name: Run bandit
     run: once
-    deps: [install_bandit]
+    deps: [install-bandit]
     cmds:
       - bandit -c {{.BANDIT_CONFIG}} -r $GITHUB_WORKSPACE
     status:
@@ -74,5 +74,5 @@ tasks:
   default:
     run: once
     deps:
-      - run_pylint
-      - run_bandit
+      - run-pylint
+      - run-bandit

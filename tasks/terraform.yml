@@ -25,16 +25,16 @@ output:
 
 tasks:
   # Installations
-  install_terraform:
+  install-terraform:
     name: Install Terraform
     run: once
     internal: true
     cmds:
-      - bash $GITHUB_ACTION_PATH/scripts/install_terraform.sh
+      - bash $GITHUB_ACTION_PATH/scripts/install-terraform.sh
     status:
       - '[[ $UCI_TERRAFORM_FMT_CHECKS != "true" ]]'
 
-  install_tflint:
+  install-tflint:
     name: Install TFLint
     run: once
     internal: true
@@ -45,7 +45,7 @@ tasks:
     status:
       - '[[ $UCI_TERRAFORM_TFLINT_CHECKS != "true" ]]'
 
-  install_trivy:
+  install-trivy:
     name: Install Trivy
     run: once
     internal: true
@@ -55,28 +55,28 @@ tasks:
       - '[[ $UCI_TERRAFORM_TRIVY_CHECKS != "true" ]]'
 
   # Checks
-  run_terraform_fmt:
+  run-terraform-fmt:
     name: Run terraform fmt
     run: once
-    deps: [install_terraform]
+    deps: [install-terraform]
     cmds:
       - terraform fmt -recursive $GITHUB_WORKSPACE
     status:
       - '[[ $UCI_TERRAFORM_FMT_CHECKS != "true" ]]'
 
-  run_tflint:
+  run-tflint:
     name: Run TFLint
     run: once
-    deps: [install_tflint]
+    deps: [install-tflint]
     cmds:
       - tflint --config {{.TFLINT_CONFIG}} --chdir $GITHUB_WORKSPACE --recursive
     status:
       - '[[ $UCI_TERRAFORM_TFLINT_CHECKS != "true" ]]'
 
-  run_trivy:
+  run-trivy:
     name: Run Trivy
     run: once
-    deps: [install_trivy]
+    deps: [install-trivy]
     cmds:
       - trivy config -c {{.TRIVY_CONFIG}} $GITHUB_WORKSPACE/
     status:
@@ -85,6 +85,6 @@ tasks:
   default:
     run: once
     deps:
-      - run_terraform_fmt
-      - run_tflint
-      - run_trivy
+      - run-terraform-fmt
+      - run-tflint
+      - run-trivy

@@ -11,11 +11,11 @@ env:
 dotenv: ['{{.CLIENT}}/uci.env', '{{.ACTION}}/uci.env']
 
 includes:
-  python_tasks:
+  python-tasks:
     taskfile: ./tasks/python.yml
-  terraform_tasks:
+  terraform-tasks:
     taskfile: ./tasks/terraform.yml
-  summary_tasks:
+  summary-tasks:
     taskfile: ./tasks/summary.yml
 
 output:
@@ -24,33 +24,31 @@ output:
     end: '::endgroup::'
 
 tasks:
-  python_checks:
+  python-checks:
     name: Run python checks
-    ignore_error: true
     run: once
     cmds:
-      - task: python_tasks:default
+      - task: python-tasks:default
     status:
       - '[[ $UCI_PYTHON_CHECKS != "true" ]]'
 
-  terraform_checks:
+  terraform-checks:
     name: Run terraform checks
-    ignore_error: true
     run: once
     cmds:
-      - task: terraform_tasks:default
+      - task: terraform-tasks:default
     status:
       - '[[ $UCI_TERRAFORM_CHECKS != "true" ]]'
 
-  run_checks:
+  run-all-checks:
     name: Run all CI checks
     run: once
     deps:
-      - python_checks
-      - terraform_checks
+      - python-checks
+      - terraform-checks
 
-  generate_summary:
+  generate-summary:
     name: Generate checks Summary
     run: once
     cmds:
-      - task: summary_tasks:default
+      - task: summary-tasks:default
