@@ -46,7 +46,7 @@ tasks:
       - '[[ $UCI_TERRAFORM_TFLINT_CHECKS != "true" ]]'
 
   install_trivy:
-    name: Install trivy
+    name: Install Trivy
     run: once
     internal: true
     cmds:

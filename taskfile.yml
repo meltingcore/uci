@@ -41,20 +41,14 @@ tasks:
       - '[[ $UCI_TERRAFORM_CHECKS != "true" ]]'
 
   run_checks:
-    ignore_error: true
+    name: Run all CI checks
     run: once
     deps:
       - python_checks
       - terraform_checks
 
   generate_summary:
-    ignore_error: true
+    name: Generate checks Summary
     run: once
-    deps:
-      - run_checks
     cmds:
       - task: summary_tasks:default
-
-  default:
-    deps:
-      - generate_summary

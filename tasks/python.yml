@@ -31,6 +31,7 @@ tasks:
     internal: true
     cmds:
       - python3 -m pip install --user --upgrade pip
+
   install_pylint:
     name: Install pylint
     run: once
@@ -40,6 +41,7 @@ tasks:
       - pip install --user --upgrade pylint
     status:
       - '[[ $UCI_PYTHON_PYLINT_CHECKS != "true" ]]'
+
   install_bandit:
     name: Install bandit
     run: once
@@ -59,6 +61,7 @@ tasks:
       - pylint --rcfile {{.PYLINT_CONFIG}} --recursive=y $GITHUB_WORKSPACE
     status:
       - '[[ $UCI_PYTHON_PYLINT_CHECKS != "true" ]]'
+
   run_bandit:
     name: Run bandit
     run: once
