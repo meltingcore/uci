@@ -21,7 +21,6 @@ tasks:
     cmds:
       - |
         curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
-        tflint --config {{.TFLINT_CONFIG}} --init
     status:
       - '[[ $UCI_TERRAFORM_TFLINT_CHECKS != "true" ]]'
 
