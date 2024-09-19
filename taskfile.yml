@@ -25,14 +25,13 @@ output:
 
 tasks:
   setup-logger:
-    name: Setup logger
     run: once
     cmds:
       - cp $GITHUB_ACTION_PATH/scripts/uci_logger.sh /usr/local/bin/uci_logger
       - chmod +x /usr/local/bin/uci_logger
 
   python-checks:
-    name: Run python checks
+    ignore_error: true
     run: once
     cmds:
       - mkdir -p $GITHUB_WORKSPACE/reports/python
@@ -41,7 +40,7 @@ tasks:
       - '[[ $UCI_PYTHON_CHECKS != "true" ]]'
 
   terraform-checks:
-    name: Run terraform checks
+    ignore_error: true
     run: once
     cmds:
       - mkdir -p $GITHUB_WORKSPACE/reports/terraform
@@ -50,14 +49,13 @@ tasks:
       - '[[ $UCI_TERRAFORM_CHECKS != "true" ]]'
 
   run-all-checks:
-    name: Run all CI checks
+    ignore_error: true
     run: once
     deps:
       - python-checks
       - terraform-checks
 
   generate-summary:
-    name: Generate checks Summary
     run: once
     cmds:
       - task: summary-tasks:default
