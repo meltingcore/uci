@@ -12,7 +12,7 @@ tasks:
   install-terraform:
     run: once
     cmds:
-      - bash $GITHUB_ACTION_PATH/scripts/install_terraform.sh
+      - bash $GITHUB_ACTION_PATH/scripts/terraform/install_terraform.sh
     status:
       - '[[ $UCI_TERRAFORM_FMT_CHECKS != "true" ]]'
 
