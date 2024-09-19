@@ -53,9 +53,9 @@ EXIT_CODE=$3
 
 # Set the value to true or false without quotes if it's a boolean
 if [[ $EXIT_CODE == "0" ]]; then
-  jq --indent 4 ".$SECTION += {\"$KEY\": \"successful\"}" uci_checks.json > uci_checks.tmp \
-  && mv uci_checks.tmp uci_checks.json
+  jq --indent 4 ".$SECTION += {\"$KEY\": \"successful\"}" "$GITHUB_ACTION_PATH"/uci_checks.json > uci_checks.tmp \
+  && mv uci_checks.tmp "$GITHUB_ACTION_PATH"/uci_checks.json
 else
-  jq --indent 4 ".$SECTION += {\"$KEY\": \"failed\"}" uci_checks.json > uci_checks.tmp \
-  && mv uci_checks.tmp uci_checks.json
+  jq --indent 4 ".$SECTION += {\"$KEY\": \"failed\"}" "$GITHUB_ACTION_PATH"/uci_checks.json > uci_checks.tmp \
+  && mv uci_checks.tmp "$GITHUB_ACTION_PATH"/uci_checks.json
 fi
