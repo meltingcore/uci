@@ -24,10 +24,18 @@ output:
     end: '::endgroup::'
 
 tasks:
+  setup-logger:
+    name: Setup logger
+    run: once
+    cmds:
+      - cp $GITHUB_ACTION_PATH/scripts/uci_looger.sh /usr/local/bin/uci_logger
+      - chmod +x /usr/local/bin/uci_logger
+
   python-checks:
     name: Run python checks
     run: once
     cmds:
+      - mkdir -p $GITHUB_WORKSPACE/reports/python
       - task: python-tasks:default
     status:
       - '[[ $UCI_PYTHON_CHECKS != "true" ]]'
@@ -36,6 +44,7 @@ tasks:
     name: Run terraform checks
     run: once
     cmds:
+      - mkdir -p $GITHUB_WORKSPACE/reports/terraform
       - task: terraform-tasks:default
     status:
       - '[[ $UCI_TERRAFORM_CHECKS != "true" ]]'

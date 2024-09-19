@@ -2,22 +2,6 @@ version: '3'
 
 silent: true
 
-env:
-  PYLINT_CONFIG:
-    sh: |
-      if [[ -f $GITHUB_WORKSPACE/.pylintrc ]]; then
-        echo $GITHUB_WORKSPACE/.pylintrc
-      else
-        echo $GITHUB_ACTION_PATH/configs/.pylintrc
-      fi
-  BANDIT_CONFIG:
-    sh: |
-      if [[ -f $GITHUB_WORKSPACE/.bandit.yml ]]; then
-        echo $GITHUB_WORKSPACE/.bandit.yml
-      else
-        echo $GITHUB_ACTION_PATH/configs/.bandit.yml
-      fi
-
 output:
   group:
     begin: '::group::{{.TASK}}'
@@ -26,27 +10,21 @@ output:
 tasks:
   # Installations
   upgrade-pip:
-    name: Upgrade pip
     run: once
-    internal: true
     cmds:
       - python3 -m pip install --user --upgrade pip
 
   install-pylint:
-    name: Install pylint
     run: once
     deps: [upgrade-pip]
-    internal: true
     cmds:
       - pip install --user --upgrade pylint
     status:
       - '[[ $UCI_PYTHON_PYLINT_CHECKS != "true" ]]'
 
   install-bandit:
-    name: Install bandit
     run: once
     deps: [upgrade-pip]
-    internal: true
     cmds:
       - pip install --user --upgrade bandit
     status:
@@ -54,20 +32,18 @@ tasks:
 
   # Checks
   run-pylint:
-    name: Run pylint
     run: once
     deps: [install-pylint]
     cmds:
-      - pylint --rcfile {{.PYLINT_CONFIG}} --recursive=y $GITHUB_WORKSPACE
+      - bash $GITHUB_ACTION_PATH/scripts/python/run_pylint.sh
     status:
       - '[[ $UCI_PYTHON_PYLINT_CHECKS != "true" ]]'
 
   run-bandit:
-    name: Run bandit
     run: once
     deps: [install-bandit]
     cmds:
-      - bandit -c {{.BANDIT_CONFIG}} -r $GITHUB_WORKSPACE
+      - bash $GITHUB_ACTION_PATH/scripts/python/run_bandit.sh
     status:
       - '[[ $UCI_PYTHON_BANDIT_CHECKS != "true" ]]'
 

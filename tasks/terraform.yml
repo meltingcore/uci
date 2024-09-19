@@ -2,22 +2,6 @@ version: '3'
 
 silent: true
 
-env:
-  TFLINT_CONFIG:
-    sh: |
-      if [[ -f $GITHUB_WORKSPACE/.tflint.hcl ]]; then
-        echo $GITHUB_WORKSPACE/.tflint.hcl
-      else
-        echo $GITHUB_ACTION_PATH/configs/.tflint.hcl
-      fi
-  TRIVY_CONFIG:
-    sh: |
-      if [[ -f $GITHUB_WORKSPACE/.trivy.yml ]]; then
-        echo $GITHUB_WORKSPACE/.trivy.yml
-      else
-        echo $GITHUB_ACTION_PATH/configs/.trivy.yml
-      fi
-
 output:
   group:
     begin: '::group::{{.TASK}}'
@@ -26,18 +10,14 @@ output:
 tasks:
   # Installations
   install-terraform:
-    name: Install Terraform
     run: once
-    internal: true
     cmds:
       - bash $GITHUB_ACTION_PATH/scripts/install_terraform.sh
     status:
       - '[[ $UCI_TERRAFORM_FMT_CHECKS != "true" ]]'
 
   install-tflint:
-    name: Install TFLint
     run: once
-    internal: true
     cmds:
       - |
         curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
@@ -46,9 +26,7 @@ tasks:
       - '[[ $UCI_TERRAFORM_TFLINT_CHECKS != "true" ]]'
 
   install-trivy:
-    name: Install Trivy
     run: once
-    internal: true
     cmds:
       - curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sudo sh -s -- -b /usr/local/bin $UCI_TERRAFORM_TRIVY_VERSION
     status:
@@ -56,29 +34,26 @@ tasks:
 
   # Checks
   run-terraform-fmt:
-    name: Run terraform fmt
     run: once
     deps: [install-terraform]
     cmds:
-      - terraform fmt -recursive $GITHUB_WORKSPACE
+      - bash $GITHUB_ACTION_PATH/scripts/terraform/run_terraform_fmt.sh
     status:
       - '[[ $UCI_TERRAFORM_FMT_CHECKS != "true" ]]'
 
   run-tflint:
-    name: Run TFLint
     run: once
     deps: [install-tflint]
     cmds:
-      - tflint --config {{.TFLINT_CONFIG}} --chdir $GITHUB_WORKSPACE --recursive
+      - bash $GITHUB_ACTION_PATH/scripts/terraform/run_tflint.sh
     status:
       - '[[ $UCI_TERRAFORM_TFLINT_CHECKS != "true" ]]'
 
   run-trivy:
-    name: Run Trivy
     run: once
     deps: [install-trivy]
     cmds:
-      - trivy config -c {{.TRIVY_CONFIG}} $GITHUB_WORKSPACE/
+      - bash $GITHUB_ACTION_PATH/scripts/terraform/run_trivy.sh
     status:
       - '[[ $UCI_TERRAFORM_TRIVY_CHECKS != "true" ]]'
 

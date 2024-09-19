@@ -10,6 +10,12 @@ runs:
       uses: arduino/setup-task@v2
       with:
         version: "3.x"
+
+    # Setup UCI logger
+    - name: Setup UCI logger
+      shell: bash
+      run: task -t $GITHUB_ACTION_PATH/taskfile.yml -d $GITHUB_WORKSPACE setup-logger
+
     # Run all CI checks via taskfile
     - name: Run CI checks
       shell: bash
