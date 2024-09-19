@@ -35,8 +35,13 @@ install_jq() {
     fi
 }
 
+# Script to update JSON file using jq
+SECTION=$1
+KEY=$2
+EXIT_CODE=$3
+
 # Validate input
-if [ -z "$SECTION" ] || [ -z "$KEY" ]; then
+if [ -z "$SECTION" ] || [ -z "$KEY" ] || [ -z "$EXIT_CODE" ]; then
     echo "Usage: $0 <section> <key>"
     exit 1
 fi
@@ -45,11 +50,6 @@ fi
 if ! command -v jq &> /dev/null; then
     install_jq
 fi
-
-# Script to update JSON file using jq
-SECTION=$1
-KEY=$2
-EXIT_CODE=$3
 
 # Set the value to true or false without quotes if it's a boolean
 if [[ $EXIT_CODE == "0" ]]; then
