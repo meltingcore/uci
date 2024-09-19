@@ -11,7 +11,12 @@ def json_to_markdown(data):
     # Loop through the JSON data to generate the table rows
     for technology, checks in data.items():
         for check, result in checks.items():
-            markdown_table += f"| {technology} | {check} | {result} |\n"
+            if result == "successful":
+                markdown_table += f"| {technology} | {check} | ✅ |\n"
+            elif result == "failed":
+                markdown_table += f"| {technology} | {check} | ❌ |\n"
+            else:
+                markdown_table += f"| {technology} | {check} | {result} |\n"
 
     return markdown_table
 
@@ -21,8 +26,6 @@ def main(json_file_path):
     # Load JSON data from the specified file
     with open(json_file_path, 'r') as f:
         data = json.load(f)
-
-    print(data)
 
     # Generate and print the markdown table
     markdown_output = json_to_markdown(data)
