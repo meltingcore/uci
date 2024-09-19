@@ -55,7 +55,9 @@ EXIT_CODE=$3
 if [[ $EXIT_CODE == "0" ]]; then
   jq --indent 4 ".$SECTION += {\"$KEY\": \"successful\"}" "$GITHUB_ACTION_PATH"/uci_checks.json > uci_checks.tmp \
   && mv uci_checks.tmp "$GITHUB_ACTION_PATH"/uci_checks.json
+  echo "UCI $SECTION check $KEY successful."
 else
   jq --indent 4 ".$SECTION += {\"$KEY\": \"failed\"}" "$GITHUB_ACTION_PATH"/uci_checks.json > uci_checks.tmp \
   && mv uci_checks.tmp "$GITHUB_ACTION_PATH"/uci_checks.json
+  echo "UCI $SECTION check $KEY failed."
 fi
