@@ -14,18 +14,18 @@ runs:
     # Setup UCI logger
     - name: Setup UCI logger
       shell: bash
-      run: task -t $GITHUB_ACTION_PATH/taskfile.yml -d $GITHUB_WORKSPACE setup-logger
+      run: task -t $GITHUB_ACTION_PATH/taskfile.yml setup-logger
 
     # Run all CI checks via taskfile
     - name: Run CI checks
       shell: bash
-      run: task -t $GITHUB_ACTION_PATH/taskfile.yml -d $GITHUB_WORKSPACE run-all-checks
+      run: task -t $GITHUB_ACTION_PATH/taskfile.yml run-all-checks
 
     # Generate markdown summary
     - name: Generate Summary
       if: success() || failure()
       shell: bash
-      run: task -t $GITHUB_ACTION_PATH/taskfile.yml -d $GITHUB_WORKSPACE generate-summary
+      run: task -t $GITHUB_ACTION_PATH/taskfile.yml generate-summary
 
 branding:
   icon: "underline"

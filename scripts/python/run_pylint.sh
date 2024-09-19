@@ -8,5 +8,5 @@ else
   PYLINT_CONFIG=$GITHUB_ACTION_PATH/configs/.pylintrc
 fi
 
-pylint --rcfile "$PYLINT_CONFIG" --recursive=y "$GITHUB_WORKSPACE" | tee reports/python/pylint.log
+pylint --rcfile "$PYLINT_CONFIG" --recursive=y "$GITHUB_WORKSPACE" | tee "$GITHUB_WORKSPACE"/reports/python/pylint.log
 uci_logger python pylint $?
