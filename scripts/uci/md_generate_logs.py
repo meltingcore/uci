@@ -13,9 +13,9 @@ def generate_markdown_for_logs(directory):
                 file_name_without_extension = os.path.splitext(file)[0]  # Remove the .log extension
 
                 # Print the details section for each log file
-                print(f"### {file_name_without_extension}")
-                print("<details>")
-                print(f"  ```shell")
+                print(f"### {file_name_without_extension}\n")
+                print("<details>\n")
+                print(f"```shell\n")
 
                 # Print the contents of the log file
                 with open(log_file_path, 'r') as log_file:
@@ -23,7 +23,7 @@ def generate_markdown_for_logs(directory):
                         print(f"  {line}", end='')  # Avoid adding extra new lines
 
                 # Close the details and code block sections
-                print(f"  ```")
+                print(f"```\n")
                 print("</details>\n")
 
 
