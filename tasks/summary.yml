@@ -23,4 +23,8 @@ tasks:
       - generate-config
     run: once
     cmds:
-      - echo "Generate Summary for GitHub Actions (placeholder)"
+      - |
+        printf '## Results \n' >> $GITHUB_STEP_SUMMARY
+        python3 $GITHUB_ACTION_PATH/scripts/md_table_generator.py  \
+        $GITHUB_ACTION_PATH/uci_checks.json >> $GITHUB_STEP_SUMMARY
+        printf '``` \n' >> $GITHUB_STEP_SUMMARY
