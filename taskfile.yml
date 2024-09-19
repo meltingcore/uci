@@ -27,7 +27,7 @@ tasks:
   setup-logger:
     run: once
     cmds:
-      - cp $GITHUB_ACTION_PATH/scripts/uci_logger.sh /usr/local/bin/uci_logger
+      - cp $GITHUB_ACTION_PATH/scripts/uci/uci_logger.sh /usr/local/bin/uci_logger
       - chmod +x /usr/local/bin/uci_logger
 
   python-checks:

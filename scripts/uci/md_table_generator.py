@@ -12,9 +12,9 @@ def json_to_markdown(data):
     for technology, checks in data.items():
         for check, result in checks.items():
             if result == "successful":
-                markdown_table += f"| {technology} | {check} | ✅ |\n"
+                markdown_table += f"| {technology} | {check} | [✅](#{check}) |\n"
             elif result == "failed":
-                markdown_table += f"| {technology} | {check} | ❌ |\n"
+                markdown_table += f"| {technology} | {check} | [❌](#{check}) |\n"
             else:
                 markdown_table += f"| {technology} | {check} | {result} |\n"
 
