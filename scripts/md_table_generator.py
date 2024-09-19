@@ -22,6 +22,8 @@ def main(json_file_path):
     with open(json_file_path, 'r') as f:
         data = json.load(f)
 
+    print(data)
+
     # Generate and print the markdown table
     markdown_output = json_to_markdown(data)
     print(markdown_output)
