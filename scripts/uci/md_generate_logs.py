@@ -1,6 +1,13 @@
 import os
 import sys
 import json
+import re
+
+
+# Function to create a valid markdown anchor from a check name
+def generate_anchor(text):
+    # Convert to lowercase, replace spaces with hyphens, and remove special characters
+    return re.sub(r'[^a-z0-9\-_]', '', text.lower().replace(' ', '-'))
 
 
 def load_failed_checks(json_file):
@@ -60,9 +67,12 @@ def generate_markdown_for_logs(directory, json_file_path, failed_only=False):
                 if check in log_files:  # If we have a log file for this check
                     log_file_path = log_files[check]
 
+                    # Generate the anchor link for the check
+                    anchor = generate_anchor(check)
+
                     # Print the details section for each check
                     print(f"#### {check}\n")
-                    print(f"<details>\n<summary>Expand to view logs for {check}</summary>\n")
+                    print(f"<details>\n<summary id=\"{anchor}\">Expand to view logs for {check}</summary>\n")
                     print(f"```log\n")
 
                     # Print the contents of the log file
