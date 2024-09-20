@@ -18,6 +18,11 @@ tasks:
         env | grep ^UCI_ | tee -a $GITHUB_STEP_SUMMARY
         printf '``` \n' >> $GITHUB_STEP_SUMMARY
 
+        printf '## Checks outcome as JSON \n' >> $GITHUB_STEP_SUMMARY
+        printf '```json \n' >> $GITHUB_STEP_SUMMARY
+        cat $GITHUB_ACTION_PATH/uci_checks.json $GITHUB_STEP_SUMMARY
+        printf '``` \n' >> $GITHUB_STEP_SUMMARY
+
   default:
     deps:
       - generate-config
