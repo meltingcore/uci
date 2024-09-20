@@ -25,7 +25,10 @@ tasks:
     cmds:
       - |
         printf '## Results \n' >> $GITHUB_STEP_SUMMARY
+
         python3 $GITHUB_ACTION_PATH/scripts/uci/md_table_generator.py  \
         $GITHUB_ACTION_PATH/uci_checks.json >> $GITHUB_STEP_SUMMARY
+
         python3 $GITHUB_ACTION_PATH/scripts/uci/md_generate_logs.py  \
-        $GITHUB_WORKSPACE/reports >> $GITHUB_STEP_SUMMARY
+        $GITHUB_WORKSPACE/reports failed-checks \
+        $GITHUB_ACTION_PATH/uci_checks.json >> $GITHUB_STEP_SUMMARY

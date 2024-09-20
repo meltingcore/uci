@@ -8,9 +8,11 @@ def json_to_markdown(data):
     markdown_table = "| **Technology** | **Check** | **Result** |\n"
     markdown_table += "|:--------------:|:---------:|:----------:|\n"
 
-    # Loop through the JSON data to generate the table rows
-    for technology, checks in data.items():
-        for check, result in checks.items():
+    # Loop through the JSON data to generate the table rows, sorted by technology and check
+    for technology in sorted(data.keys()):  # Sort technologies alphabetically
+        checks = data[technology]
+        for check in sorted(checks.keys()):  # Sort checks alphabetically
+            result = checks[check]
             if result == "successful":
                 markdown_table += f"| {technology} | {check} | [✅](#{check}) |\n"
             elif result == "failed":
