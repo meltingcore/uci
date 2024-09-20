@@ -1,0 +1,8 @@
+# Same as '--debug'
+# Default is false
+debug: false
+
+# Same as '--insecure'
+# Default is false
+insecure: false
+

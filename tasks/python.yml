@@ -1,0 +1,54 @@
+version: '3'
+
+silent: true
+
+output:
+  group:
+    begin: '::group::{{.TASK}}'
+    end: '::endgroup::'
+
+tasks:
+  # Installations
+  upgrade-pip:
+    run: once
+    cmds:
+      - python3 -m pip install --user --upgrade pip
+
+  install-pylint:
+    run: once
+    deps: [upgrade-pip]
+    cmds:
+      - pip install --user --upgrade pylint
+    status:
+      - '[[ $UCI_PYTHON_PYLINT_CHECKS != "true" ]]'
+
+  install-bandit:
+    run: once
+    deps: [upgrade-pip]
+    cmds:
+      - pip install --user --upgrade bandit
+    status:
+      - '[[ $UCI_PYTHON_BANDIT_CHECKS != "true" ]]'
+
+  # Checks
+  run-pylint:
+    run: once
+    deps: [install-pylint]
+    cmds:
+      - bash $GITHUB_ACTION_PATH/scripts/python/run_pylint.sh
+    status:
+      - '[[ $UCI_PYTHON_PYLINT_CHECKS != "true" ]]'
+
+  run-bandit:
+    run: once
+    deps: [install-bandit]
+    cmds:
+      - bash $GITHUB_ACTION_PATH/scripts/python/run_bandit.sh
+    status:
+      - '[[ $UCI_PYTHON_BANDIT_CHECKS != "true" ]]'
+
+  default:
+    run: once
+    deps:
+      - run-pylint
+      - run-bandit

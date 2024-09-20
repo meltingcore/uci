@@ -1,3 +1,24 @@
+# 2.0.0
+
+IMPROVEMENTS:
+
+* [BREAKING CHANGE] Refactor the whole solution to use 
+taskfile for parallelism
+* [BREAKING CHANGE] `uci.env` introduced as configuration file
+in place of arguments to the actino itself
+* Now comes with default configuration files for the checks
+that support them
+
+# 1.1.0
+
+IMPROVEMENTS:
+
+* Add separate workflow for development snapshots
+
+BUGFIXES:
+
+* attempt to remediate pylint command error
+
 # 1.0.2
 
 IMPROVEMENTS:

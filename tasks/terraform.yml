@@ -1,0 +1,64 @@
+version: '3'
+
+silent: true
+
+output:
+  group:
+    begin: '::group::{{.TASK}}'
+    end: '::endgroup::'
+
+tasks:
+  # Installations
+  install-terraform:
+    run: once
+    cmds:
+      - bash $GITHUB_ACTION_PATH/scripts/terraform/install_terraform.sh
+    status:
+      - '[[ $UCI_TERRAFORM_FMT_CHECKS != "true" ]]'
+
+  install-tflint:
+    run: once
+    cmds:
+      - |
+        curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
+    status:
+      - '[[ $UCI_TERRAFORM_TFLINT_CHECKS != "true" ]]'
+
+  install-trivy:
+    run: once
+    cmds:
+      - curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sudo sh -s -- -b /usr/local/bin $UCI_TERRAFORM_TRIVY_VERSION
+    status:
+      - '[[ $UCI_TERRAFORM_TRIVY_CHECKS != "true" ]]'
+
+  # Checks
+  run-terraform-fmt:
+    run: once
+    deps: [install-terraform]
+    cmds:
+      - bash $GITHUB_ACTION_PATH/scripts/terraform/run_terraform_fmt.sh
+    status:
+      - '[[ $UCI_TERRAFORM_FMT_CHECKS != "true" ]]'
+
+  run-tflint:
+    run: once
+    deps: [install-tflint]
+    cmds:
+      - bash $GITHUB_ACTION_PATH/scripts/terraform/run_tflint.sh
+    status:
+      - '[[ $UCI_TERRAFORM_TFLINT_CHECKS != "true" ]]'
+
+  run-trivy:
+    run: once
+    deps: [install-trivy]
+    cmds:
+      - bash $GITHUB_ACTION_PATH/scripts/terraform/run_trivy.sh
+    status:
+      - '[[ $UCI_TERRAFORM_TRIVY_CHECKS != "true" ]]'
+
+  default:
+    run: once
+    deps:
+      - run-terraform-fmt
+      - run-tflint
+      - run-trivy

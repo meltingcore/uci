@@ -2,7 +2,7 @@
 
 - [UCI](#uci)
    * [Usage](#usage)
-   * [Change tools versions](#change-tools-versions)
+   * [Contribution](#contribution)
    * [Checks](#checks)
 
 <!-- TOC end -->
@@ -14,7 +14,7 @@ Universal CI GitHub Action to add in your workflows.
 ## Usage
 
 You can set it up to run on creating or updating
-pull requests like this:
+pull requests like this complete workflow:
 
 ```yaml
 name: Your workflow name
@@ -30,42 +30,57 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run UCI checks
-        uses: meltingcore/uci@v1
+        uses: meltingcore/uci@v2
 ```
 
-## Change tools versions
+You can invoke the action:
 
-By default, the tools' versions being used are:
+- with a specific version (like `v1.1.0`) to hardcode to specific release
+- with a major version (like `v1`) to always run the latest release 
+**of that major version** (i.e. `v1.1.0`, `v1.1.2`, `v2.0.0`, etc.)
 
-* python: `3.x` (latest from v3)
-  * pylint: `""` (latest from pip)
-  * bandit: `""` (latest from pip)
-* terraform: `latest`
-  * tflint: `latest`
-  * trivy: `latest` (cannot be modified)
+### Checking the results
 
-Almost never you would want to change the defaults but if you do, you
-can change what version is being used for a particular tool as follows:
+The action generates a summary of the checks that were run and
+displays it at the end of the workflow. In the summary you can check:
+
+_The complete UCI configuration_
+![the complete UCI configuration](images/show_config.png)
+
+_Table with the checks' results_
+![Table with the checks' results](images/table_results.png)
+
+_Logs for each check_
+![Logs for each check](images/check_logs.png)
+
+If any check fails the whole action step will fail to make
+sure that the PR is not merged with failing checks.
+
+## Contributing & Testing
+
+Every PR should be first raised as **draft** one. When that 
+PR is then created or updated (but not merged) it triggers
+a workflow that creates a tag named after the development branch
+that is attempted to be merged to the `main` branch but with 
+`version-` as prefix. So if you want to validate any changes before
+your PR is ready for review, and your development branch name
+is `bugfix/something`, you can just invoke the uci action with 
+your branch name as follows:
 
 ```yaml
       - name: Run UCI checks
-        uses: meltingcore/uci@v1
-        with:
-          python_version: '3.9'
-          pylint_version: '>=3.0.0'
-          bandit_version: '==1.7.3'
-          terraform_version: '1.0.0'
-          tflint_version: 'v0.36.2'  
+        uses: meltingcore/uci@version-bugfix/something
 ```
 
-**NOTES**
+After you are satisfied that your changes work as intended you can
+then remove the draft status from your PR and merge it upon approval.
 
-* The tools that are installed via pip support constraints as
-seen from the examples above.
-* Trivy is handled via GitHub Action that does not support version
-as argument so you cannot adjust it... It will always be the latest.
+Repository used for testing the solution so far is:
+[meltingcore/uci-tests](https://github.com/meltingcore/uci-tests)
 
-## Checks
+## Customization
+
+### Checks
 
 Currently, contains the following checks:
 
@@ -77,25 +92,40 @@ Currently, contains the following checks:
   * tflint
   * trivy
 
-You can disable some checks if you don't need them as follows:
+### Configuration
 
-* Disabling technology as a whole (i.e. don't do any Python related checks):
+The UCI uses a dotenv configuration file named `uci.env` that
+can be used for customizing the behaviour of the action.
 
-```yaml
-      - name: Run UCI checks
-        uses: meltingcore/uci@v1
-        with:
-          python_checks: false
+The configuration options are as follows (the values in bold are defaults):
+
+- `UCI_SUMMARY_CHECKS`: [all | **failed**] - the summary of the checks
+  that should be displayed in the end. If set to `all` it will
+  display all the checks that were run. If set to `failed` it will
+  display only the failed checks.
+- `UCI_PYTHON_CHECKS`: [**true** | false] - whether to run Python checks at all
+- `UCI_PYTHON_PYLINT_CHECKS`: [**true** | false] - whether to run pylint checks
+- `UCI_PYTHON_BANDIT_CHECKS`: [**true** | false] - whether to run bandit checks
+- `UCI_TERRAFORM_CHECKS`: [**true** | false] - whether to run Terraform checks at all
+- `UCI_TERRAFORM_VERSION`: [**v1.9.5** | <string>] - the version of Terraform to use.
+Should be any valid version string that Terraform supports (with the v prefix).
+- `UCI_TERRAFORM_FMT_CHECKS`: [**true** | false] - whether to run terraform fmt checks
+- `UCI_TERRAFORM_TFLINT_CHECKS`: [**true** | false] - whether to run tflint checks
+- `UCI_TERRAFORM_TRIVY_CHECKS`: [**true** | false] - whether to run trivy checks
+- `UCI_TERRAFORM_TRIVY_VERSION`: [**v0.55.1** | <string>] - the version of Trivy to use.
+Should be any valid version string that Trivy supports (with the v prefix).
+
+If you want to override any of them you can place `uci.env` file in 
+the root of your repository and set the values you want to override.
+
+Example:
+
+- Turn off python checks
+- Use older terraform version
+- Show results of all checks
+
+```env
+UCI_SUMMARY_CHECKS=all
+UCI_PYTHON_CHECKS=false
+UCI_TERRAFORM_VERSION=v1.5.0
 ```
-
-* Disabling a specific check (i.e. don't do bandit checks only):
-
-```yaml
-      - name: Run UCI checks
-        uses: meltingcore/uci@v1
-        with:
-          bandit_checks: false
-```
-
-For more information and details, you can examine the
-[action](./.github/actions/ci/action.yml) file itself.

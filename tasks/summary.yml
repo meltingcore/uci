@@ -1,0 +1,36 @@
+version: '3'
+
+silent: true
+
+output:
+  group:
+    begin: '::group::{{.TASK}}'
+    end: '::endgroup::'
+
+tasks:
+  generate-config:
+    name: Print the runtime UCI configuration
+    run: once
+    cmds:
+      - |
+        printf '## UCI Configuration \n' >> $GITHUB_STEP_SUMMARY
+        printf '```dotenv \n' >> $GITHUB_STEP_SUMMARY
+        env | grep ^UCI_ | tee -a $GITHUB_STEP_SUMMARY
+        printf '``` \n' >> $GITHUB_STEP_SUMMARY
+      - cat $GITHUB_ACTION_PATH/uci_checks.json
+
+  default:
+    deps:
+      - generate-config
+    run: once
+    cmds:
+      - |
+        python3 $GITHUB_ACTION_PATH/scripts/uci/md_table_generator.py  \
+        $GITHUB_ACTION_PATH/uci_checks.json $UCI_SUMMARY_CHECKS >> $GITHUB_STEP_SUMMARY
+
+        python3 $GITHUB_ACTION_PATH/scripts/uci/md_generate_logs.py  \
+        $GITHUB_WORKSPACE/reports $UCI_SUMMARY_CHECKS \
+        $GITHUB_ACTION_PATH/uci_checks.json >> $GITHUB_STEP_SUMMARY
+
+        bash $GITHUB_ACTION_PATH/scripts/uci/verify_outcome.sh
+
