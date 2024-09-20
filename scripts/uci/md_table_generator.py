@@ -1,5 +1,12 @@
 import json
 import sys
+import re
+
+
+# Function to create a valid markdown anchor from a check name
+def generate_anchor(text):
+    # Convert to lowercase, replace spaces with hyphens, and remove special characters
+    return re.sub(r'[^a-z0-9\-]', '', text.lower().replace(' ', '-'))
 
 
 # Function to generate markdown table from JSON
@@ -13,10 +20,12 @@ def json_to_markdown(data):
         checks = data[technology]
         for check in sorted(checks.keys()):  # Sort checks alphabetically
             result = checks[check]
+            # Generate the anchor link for the check
+            anchor = generate_anchor(check)
             if result == "successful":
-                markdown_table += f"| {technology} | {check} | [✅](#{check}) |\n"
+                markdown_table += f"| {technology} | {check} | [✅](#{anchor}) |\n"
             elif result == "failed":
-                markdown_table += f"| {technology} | {check} | [❌](#{check}) |\n"
+                markdown_table += f"| {technology} | {check} | [❌](#{anchor}) |\n"
             else:
                 markdown_table += f"| {technology} | {check} | {result} |\n"
 
