@@ -1,4 +1,4 @@
-# 2.0.0
+# 2.0.1
 
 IMPROVEMENTS:
 
@@ -8,16 +8,12 @@ taskfile for parallelism
 in place of arguments to the actino itself
 * Now comes with default configuration files for the checks
 that support them
-
-# 1.1.0
-
-IMPROVEMENTS:
-
 * Add separate workflow for development snapshots
 
 BUGFIXES:
 
-* attempt to remediate pylint command error
+* Adjust the documentation to reflect the changes
+* Adjust the `tag-on-dev` workflow to run on PR updates
 
 # 1.0.2
 
