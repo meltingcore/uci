@@ -58,10 +58,10 @@ def main(json_file_path, filter_type):
 # Ensure a file path and filter type are provided as command-line arguments
 if __name__ == "__main__":
     if len(sys.argv) != 3:
-        print("Usage: python3 md_table_generator.py <failed-checks|all-checks> <path_to_json_file>")
+        print("Usage: python3 md_table_generator.py <path_to_json_file> <failed-checks|all-checks>")
     else:
-        filter_type = sys.argv[1]
-        json_file_path = sys.argv[2]
+        json_file_path = sys.argv[1]
+        filter_type = sys.argv[2]
 
         if filter_type not in ["failed-checks", "all-checks"]:
             print("Invalid option for <failed-checks|all-checks>. Use 'failed-checks' or 'all-checks'.")
