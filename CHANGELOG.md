@@ -1,3 +1,12 @@
+# 1.2.0
+
+IMPROVEMENTS:
+
+* Refactor the whole solution to use taskfile for parallelism
+* `uci.env` introduced as configuration file
+* Now comes with default configuration files for the checks
+that support them
+
 # 1.1.0
 
 IMPROVEMENTS:

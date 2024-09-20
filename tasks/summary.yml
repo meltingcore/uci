@@ -31,3 +31,6 @@ tasks:
         python3 $GITHUB_ACTION_PATH/scripts/uci/md_generate_logs.py  \
         $GITHUB_WORKSPACE/reports $UCI_SUMMARY_CHECKS \
         $GITHUB_ACTION_PATH/uci_checks.json >> $GITHUB_STEP_SUMMARY
+
+        bash $GITHUB_ACTION_PATH/scripts/uci/generate_summary.sh
+
