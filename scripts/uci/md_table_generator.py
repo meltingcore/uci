@@ -6,7 +6,7 @@ import re
 # Function to create a valid markdown anchor from a check name
 def generate_anchor(text):
     # Convert to lowercase, replace spaces with hyphens, and remove special characters
-    return re.sub(r'[^a-z0-9\-]', '', text.lower().replace(' ', '-'))
+    return re.sub(r'[^a-z0-9\-_]', '', text.lower().replace(' ', '-'))
 
 
 # Function to generate markdown table from JSON
