@@ -18,21 +18,17 @@ tasks:
         env | grep ^UCI_ | tee -a $GITHUB_STEP_SUMMARY
         printf '``` \n' >> $GITHUB_STEP_SUMMARY
 
-        printf '## Checks outcome as JSON \n' >> $GITHUB_STEP_SUMMARY
-        printf '```json \n' >> $GITHUB_STEP_SUMMARY
-        cat $GITHUB_ACTION_PATH/uci_checks.json $GITHUB_STEP_SUMMARY
-        printf '``` \n' >> $GITHUB_STEP_SUMMARY
-
   default:
     deps:
       - generate-config
     run: once
     cmds:
       - |
+        printf '<a id="results"></a>' >> $GITHUB_STEP_SUMMARY
         printf '## Results \n' >> $GITHUB_STEP_SUMMARY
 
         python3 $GITHUB_ACTION_PATH/scripts/uci/md_table_generator.py  \
-        $GITHUB_ACTION_PATH/uci_checks.json >> $GITHUB_STEP_SUMMARY
+        $GITHUB_ACTION_PATH/uci_checks.json failed-checks >> $GITHUB_STEP_SUMMARY
 
         python3 $GITHUB_ACTION_PATH/scripts/uci/md_generate_logs.py  \
         $GITHUB_WORKSPACE/reports failed-checks \

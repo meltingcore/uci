@@ -60,7 +60,6 @@ def generate_markdown_for_logs(directory, json_file_path, failed_only=False):
     for technology, checks in checks_data.items():
         if checks:  # Only process if there are checks for this technology
             print(f"### {technology}\n")
-            print("<details>\n<summary>Expand to view checks</summary>\n")
 
             # For each check under this technology
             for check in sorted(checks):
@@ -72,7 +71,6 @@ def generate_markdown_for_logs(directory, json_file_path, failed_only=False):
 
                     # Print the details section for each check
                     print(f"#### {check}\n")
-                    print(f"<details>\n<summary id=\"{anchor}\">Expand to view logs for {check}</summary>\n")
                     print(f"```log\n")
 
                     # Print the contents of the log file
@@ -82,7 +80,7 @@ def generate_markdown_for_logs(directory, json_file_path, failed_only=False):
 
                     # Close the details and code block sections
                     print(f"```\n")
-                    print("</details>\n")
+                    print("[Go back to top](#results)\n")
                 else:
                     # If no log file is found for the check
                     print(f"#### {check} - No logs available\n")
