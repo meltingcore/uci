@@ -17,6 +17,7 @@ tasks:
         printf '```dotenv \n' >> $GITHUB_STEP_SUMMARY
         env | grep ^UCI_ | tee -a $GITHUB_STEP_SUMMARY
         printf '``` \n' >> $GITHUB_STEP_SUMMARY
+      - cat $GITHUB_ACTION_PATH/uci_checks.json
 
   default:
     deps:
