@@ -47,24 +47,26 @@ def main(json_file_path, filter_type):
         data = json.load(f)
 
     # Filter the checks based on the specified type
-    failed_only = filter_type == "failed-checks"
+    failed_only = filter_type == "failed"
     filtered_data = filter_checks(data, failed_only)
 
     # Generate and print the markdown table
     markdown_output = json_to_markdown(filtered_data)
+    print("<a id=\"results\"></a>")
+    print("## Results \n")
     print(markdown_output)
 
 
 # Ensure a file path and filter type are provided as command-line arguments
 if __name__ == "__main__":
     if len(sys.argv) != 3:
-        print("Usage: python3 md_table_generator.py <path_to_json_file> <failed-checks|all-checks>")
+        print("Usage: python3 md_table_generator.py <path_to_json_file> <failed|all>")
     else:
         json_file_path = sys.argv[1]
         filter_type = sys.argv[2]
 
-        if filter_type not in ["failed-checks", "all-checks"]:
-            print("Invalid option for <failed-checks|all-checks>. Use 'failed-checks' or 'all-checks'.")
+        if filter_type not in ["failed", "all"]:
+            print("Invalid option for checks. Use 'failed' or 'all'.")
             sys.exit(1)
 
         main(json_file_path, filter_type)

@@ -70,7 +70,8 @@ def generate_markdown_for_logs(directory, json_file_path, failed_only=False):
                     anchor = generate_anchor(check)
 
                     # Print the details section for each check
-                    print(f"<a id=\"{anchor}\">#### {check}</a>\n")
+                    print(f"<a id=\"{anchor}\"></a>")
+                    print(f"#### {check}\n")
                     print(f"```log\n")
 
                     # Print the contents of the log file
@@ -92,7 +93,7 @@ if __name__ == "__main__":
     # Check if the user provided the necessary arguments
     if len(sys.argv) != 4:
         print(
-            "Usage: python3 md_generate_logs.py <logs_directory> <failed-checks|all-checks> <path_to_json_file>")
+            "Usage: python3 md_generate_logs.py <logs_directory> <failed|all> <path_to_json_file>")
         sys.exit(1)
 
     # Directory to search for log files (from command-line argument)
@@ -100,12 +101,12 @@ if __name__ == "__main__":
     filter_type = sys.argv[2]
     json_file_path = sys.argv[3]
 
-    if filter_type == "failed-checks":
+    if filter_type == "failed":
         # Generate logs only for failed checks
         generate_markdown_for_logs(logs_directory, json_file_path, failed_only=True)
-    elif filter_type == "all-checks":
+    elif filter_type == "all":
         # Generate logs for all checks
         generate_markdown_for_logs(logs_directory, json_file_path, failed_only=False)
     else:
-        print("Invalid option for <failed-checks|all-checks>. Use 'failed-checks' or 'all-checks'.")
+        print("Invalid option for checks. Use 'failed' or 'all'.")
         sys.exit(1)

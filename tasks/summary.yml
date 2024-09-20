@@ -24,11 +24,9 @@ tasks:
     run: once
     cmds:
       - |
-        printf '<a id="results">## Results</a>' >> $GITHUB_STEP_SUMMARY
-
         python3 $GITHUB_ACTION_PATH/scripts/uci/md_table_generator.py  \
-        $GITHUB_ACTION_PATH/uci_checks.json failed-checks >> $GITHUB_STEP_SUMMARY
+        $GITHUB_ACTION_PATH/uci_checks.json $UCI_SUMMARY_CHECKS >> $GITHUB_STEP_SUMMARY
 
         python3 $GITHUB_ACTION_PATH/scripts/uci/md_generate_logs.py  \
-        $GITHUB_WORKSPACE/reports failed-checks \
+        $GITHUB_WORKSPACE/reports $UCI_SUMMARY_CHECKS \
         $GITHUB_ACTION_PATH/uci_checks.json >> $GITHUB_STEP_SUMMARY
