@@ -1,9 +1,11 @@
-# 1.2.0
+# 2.0.0
 
 IMPROVEMENTS:
 
-* Refactor the whole solution to use taskfile for parallelism
-* `uci.env` introduced as configuration file
+* [BREAKING CHANGE] Refactor the whole solution to use 
+taskfile for parallelism
+* [BREAKING CHANGE] `uci.env` introduced as configuration file
+in place of arguments to the actino itself
 * Now comes with default configuration files for the checks
 that support them
 

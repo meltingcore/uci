@@ -30,14 +30,14 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run UCI checks
-        uses: meltingcore/uci@v1
+        uses: meltingcore/uci@v2
 ```
 
 You can invoke the action:
 
 - with a specific version (like `v1.1.0`) to hardcode to specific release
 - with a major version (like `v1`) to always run the latest release 
-**of that major version** (i.e. `v1.1.0`, `v1.1.2`, `v1.2.0`, etc.)
+**of that major version** (i.e. `v1.1.0`, `v1.1.2`, `v2.0.0`, etc.)
 
 ### Checking the results
 
@@ -74,6 +74,9 @@ your branch name as follows:
 
 After you are satisfied that your changes work as intended you can
 then remove the draft status from your PR and merge it upon approval.
+
+Repository used for testing the solution so far is:
+[meltingcore/uci-tests](https://github.com/meltingcore/uci-tests)
 
 ## Customization
 
