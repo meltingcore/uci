@@ -24,8 +24,7 @@ tasks:
     run: once
     cmds:
       - |
-        printf '<a id="results"></a>' >> $GITHUB_STEP_SUMMARY
-        printf '## Results \n' >> $GITHUB_STEP_SUMMARY
+        printf '<a id="results">## Results</a>' >> $GITHUB_STEP_SUMMARY
 
         python3 $GITHUB_ACTION_PATH/scripts/uci/md_table_generator.py  \
         $GITHUB_ACTION_PATH/uci_checks.json failed-checks >> $GITHUB_STEP_SUMMARY

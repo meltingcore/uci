@@ -70,7 +70,7 @@ def generate_markdown_for_logs(directory, json_file_path, failed_only=False):
                     anchor = generate_anchor(check)
 
                     # Print the details section for each check
-                    print(f"#### {check}\n")
+                    print(f"<a id=\"{anchor}\">#### {check}</a>\n")
                     print(f"```log\n")
 
                     # Print the contents of the log file
