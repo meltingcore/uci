@@ -2,8 +2,11 @@
 
 - [UCI](#uci)
    * [Usage](#usage)
-   * [Contribution](#contribution)
-   * [Checks](#checks)
+      + [Checking the results](#checking-the-results)
+   * [Contributing & Testing](#contributing--testing)
+   * [Customization](#customization)
+      + [Checks](#checks)
+      + [Configuration](#configuration)
 
 <!-- TOC end -->
 
